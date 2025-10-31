@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.supplychainx.Model.Livraison.BOM;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -21,8 +24,20 @@ public class RawMaterial {
     private Integer stock;
     private Integer MinStock;
     private String unit;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idSupplier")
+
+    @ManyToMany
+    @JoinTable(
+            name = "material_suppliers",
+            joinColumns = @JoinColumn(name = "id_supplier"),
+            inverseJoinColumns = @JoinColumn(name = "id_material")
+    )
+    private List<Supplier> suppliers;
+
+    @OneToMany(mappedBy = "rawMaterial", cascade = CascadeType.ALL)
     @JsonBackReference
-    private Supplier supplier;
+    private List<SupplyOrderMaterials> SupplyOrderMaterials;
+
+    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<BOM> boms;
 }

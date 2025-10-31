@@ -10,22 +10,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "supplyOrderMaterials")
+@Table(name = "supplyMaterials")
 public class SupplyOrderMaterials {
 
-    @EmbeddedId
-    private SupplyOrderMaterialsId id;
+//    @EmbeddedId
+//    private SupplyMaterialsId id;
 
-    @ManyToOne
-    @MapsId("idOrder")
-    @JoinColumn(name = "idOrder")
-    private SupplyOrder supplyOrder;
-
-    @ManyToOne
-    @MapsId("idMaterial")
-    @JoinColumn(name = "idMaterial")
-    private RawMaterial rawMaterial;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idSupplyMaterial;
 
     @Column(nullable = false)
     private Integer quantity;
+
+    @ManyToOne
+//    @MapsId("idSupplier")
+    @JoinColumn(name = "id_supplier")
+    private SupplyOrder supplyOrder;
+
+    @ManyToOne
+//    @MapsId("idMaterial")
+    @JoinColumn(name = "id_material")
+    private RawMaterial rawMaterial;
+
 }

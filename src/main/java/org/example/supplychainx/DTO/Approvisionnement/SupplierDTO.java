@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,6 +16,7 @@ public class SupplierDTO {
     private String contact;
     private Double rating;
     private Integer leadTime;
+//    private List<String> rawMaterials;
 
 //    Material info (flattened)
 //    private Long materialId;

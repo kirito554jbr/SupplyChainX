@@ -1,9 +1,12 @@
 package org.example.supplychainx.Model.Approvisionnement;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -23,4 +26,16 @@ public class Supplier {
     private Double rating;
     @Column(nullable = false)
     private Integer leadTime;
+
+//    @ManyToMany
+//    @JoinTable(
+//            name = "material_suppliers",
+//            joinColumns = @JoinColumn(name = "id_supplier"),
+//            inverseJoinColumns = @JoinColumn(name = "id_material")
+//    )
+//    private List<RawMaterial> rawMaterials;
+
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<SupplyOrder> supplyOrders;
 }

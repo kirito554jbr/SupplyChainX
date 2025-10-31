@@ -1,31 +1,57 @@
 package org.example.supplychainx.Mappers.Approvisionnement;
 
 import org.example.supplychainx.DTO.Approvisionnement.SupplierDTO;
+import org.example.supplychainx.Model.Approvisionnement.RawMaterial;
 import org.example.supplychainx.Model.Approvisionnement.Supplier;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Component
-public class SupplierMapper {
-//    @Autowired
-//    private Supplier supplier;
+import java.util.List;
+import java.util.stream.Collectors;
 
-    public Supplier fromDtoToEntity(SupplierDTO dto){
-        Supplier supplier = new Supplier();
-        supplier.setName(dto.getName());
-        supplier.setContact(dto.getContact());
-        supplier.setRating(dto.getRating());
-        supplier.setLeadTime(dto.getLeadTime());
-        return supplier;
-    }
+@Mapper(componentModel = "spring")
+public interface SupplierMapper {
+//
+//    Supplier toEntity(SupplierDTO supplierDTO);
+//
+//    SupplierDTO toDto(Supplier supplier);
 
-    public SupplierDTO fromEntityToDto(Supplier entity){
-        SupplierDTO supplier = new SupplierDTO();
-        supplier.setIdSupplier(entity.getIdSupplier());
-        supplier.setName(entity.getName());
-        supplier.setContact(entity.getContact());
-        supplier.setRating(entity.getRating());
-        supplier.setLeadTime(entity.getLeadTime());
-        return supplier;
-    }
+
+//    @Mapping(target = "rawMaterials", source = "rawMaterials")
+    Supplier toEntity(SupplierDTO supplierDTO);
+
+    SupplierDTO toDto(Supplier supplier);
+//    {
+//        if(supplier==null){
+//            return null;
+//        }
+//        SupplierDTO dto = new SupplierDTO();
+//        dto.setIdSupplier(supplier.getIdSupplier());
+//        dto.setName(supplier.getName());
+//        dto.setContact(supplier.getContact());
+//        dto.setRating(supplier.getRating());
+//        dto.setLeadTime(supplier.getLeadTime());
+//
+//        if (supplier.getRawMaterials() != null) {
+//            List<String> rawMaterialNames = supplier.getRawMaterials().stream()
+//                    .map(RawMaterial::getName)
+//                    .collect(Collectors.toList());
+//            dto.setRawMaterials(rawMaterialNames);
+//        }
+//
+//        return dto;
+//    };
+//
+//    default List<RawMaterial> mapRawMaterials(List<String> rawMaterialNames) {
+//        if (rawMaterialNames == null) {
+//            return null;
+//        }
+//        return rawMaterialNames.stream()
+//                .map(name -> {
+//                    RawMaterial rawMaterial = new RawMaterial();
+//                    rawMaterial.setName(name);
+//                    return rawMaterial;
+//                })
+//                .collect(Collectors.toList());
+//    }
 }

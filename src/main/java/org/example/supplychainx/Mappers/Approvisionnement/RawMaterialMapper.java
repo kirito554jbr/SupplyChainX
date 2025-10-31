@@ -1,31 +1,60 @@
 package org.example.supplychainx.Mappers.Approvisionnement;
 
 import org.example.supplychainx.DTO.Approvisionnement.RawMaterialDTO;
+import org.example.supplychainx.DTO.Approvisionnement.SupplierDTO;
 import org.example.supplychainx.Model.Approvisionnement.RawMaterial;
+import org.example.supplychainx.Model.Approvisionnement.Supplier;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
-public class RawMaterialMapper {
+import java.util.List;
+import java.util.stream.Collectors;
 
-    public RawMaterial fromdtoToEntity(RawMaterialDTO dto) {
-        RawMaterial material = new RawMaterial();
-//        material.setIdMaterial(dto.getIdRawMaterial());
-        material.setName(dto.getName());
-        material.setStock(dto.getStock());
-        material.setMinStock(dto.getMinStock());
-        material.setUnit(dto.getUnit());
-//        material.setSupplier(dto.getIdSupplier());
+@Mapper(componentModel = "spring", uses = {SupplierMapper.class})
+public interface RawMaterialMapper {
+//    SupplierMapper INSTANCE = Mappers.getMapper(SupplierMapper.class);
 
-        return material;
-    }
+    @Mapping(target = "suppliers", source = "suppliers")
+    RawMaterial toEntity(RawMaterialDTO materialDTO);
 
-    public RawMaterialDTO fromEntityToDto(RawMaterial entity) {
+//    @Mapping(target = "suppliers", source = "suppliers")
+//    RawMaterialDTO toDto(RawMaterial material);
+
+    default RawMaterialDTO toDto(RawMaterial material) {
+        if (material == null) {
+            return null;
+        }
+
         RawMaterialDTO dto = new RawMaterialDTO();
-        dto.setIdRawMaterial(entity.getIdMaterial());
-        dto.setName(entity.getName());
-        dto.setStock(entity.getStock());
-        dto.setMinStock(entity.getMinStock());
-        dto.setUnit(entity.getUnit());
-        dto.setIdSupplier(entity.getSupplier().getIdSupplier());
-        dto.setSupplierName(entity.getSupplier().getName());
+        dto.setIdRawMaterial(material.getIdMaterial());
+        dto.setName(material.getName());
+        dto.setStock(material.getStock());
+        dto.setMinStock(material.getMinStock());
+        dto.setUnit(material.getUnit());
+
+        if (material.getSuppliers() != null) {
+            List<String> supplierNames = material.getSuppliers().stream()
+                    .map(Supplier::getName)
+                    .collect(Collectors.toList());
+            dto.setSuppliers(supplierNames);
+        }
+
         return dto;
     }
+
+    default List<Supplier> mapSuppliers(List<String> supplierNames) {
+        if (supplierNames == null) {
+            return null;
+        }
+        return supplierNames.stream()
+                .map(name -> {
+                    Supplier supplier = new Supplier();
+                    supplier.setName(name);
+                    return supplier;
+                })
+                .collect(Collectors.toList());
+    }
+
+
 }

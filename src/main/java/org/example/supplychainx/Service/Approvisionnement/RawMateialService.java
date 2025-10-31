@@ -1,52 +1,129 @@
 package org.example.supplychainx.Service.Approvisionnement;
 
+import org.example.supplychainx.DTO.Approvisionnement.RawMaterialDTO;
+import org.example.supplychainx.DTO.Approvisionnement.SupplierDTO;
 import org.example.supplychainx.Mappers.Approvisionnement.RawMaterialMapper;
+import org.example.supplychainx.Mappers.Approvisionnement.SupplierMapper;
 import org.example.supplychainx.Model.Approvisionnement.RawMaterial;
 import org.example.supplychainx.Model.Approvisionnement.Supplier;
 import org.example.supplychainx.Repository.Approvisionnement.RawMaterialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class RawMateialService {
 
-    @Autowired
+    //    @Autowired
     private RawMaterialRepository rawMaterialRepository;
+    private RawMaterialMapper rawMaterialMapper;
+    private SupplierService supplierService;
+    private SupplierMapper supplierMapper;
 
-    public RawMaterial findByIdRawMaterial(Long idRawMaterial){
-        return rawMaterialRepository.findById(idRawMaterial).orElse(null);
+    public RawMateialService(RawMaterialRepository rawMaterialRepository, RawMaterialMapper rawMaterialMapper, SupplierService supplierService, SupplierMapper supplierMapper) {
+        this.rawMaterialRepository = rawMaterialRepository;
+        this.rawMaterialMapper = rawMaterialMapper;
+        this.supplierService = supplierService;
+        this.supplierMapper = supplierMapper;
     }
 
-    public List<RawMaterial> findAllRawMaterials(){
-        return  rawMaterialRepository.findAll();
+    public RawMaterialDTO findByIdRawMaterial(Long idRawMaterial) {
+        RawMaterial rawMaterial = rawMaterialRepository.findById(idRawMaterial).orElse(null);
+        RawMaterialDTO rawMaterialDTO = rawMaterialMapper.toDto(rawMaterial);
+        return rawMaterialDTO;
     }
 
-    public RawMaterial saveRawMaterial(RawMaterial rawMaterial){
-        return rawMaterialRepository.save(rawMaterial);
+    public List<RawMaterialDTO> findAllRawMaterials() {
+        List<RawMaterial> rawMaterials = rawMaterialRepository.findAll();
+        List<RawMaterialDTO> materilasDTO = rawMaterials.stream()
+                .map(rawMaterial -> rawMaterialMapper.toDto(rawMaterial))
+                .toList();
+        return materilasDTO;
     }
 
-    public void deleteRawMaterial(RawMaterial rawMaterial){
-        rawMaterialRepository.delete(rawMaterial);
+    public RawMaterialDTO saveRawMaterial(RawMaterialDTO rawMaterialDTO) {
+
+        RawMaterial rawMaterial = rawMaterialMapper.toEntity(rawMaterialDTO);
+
+        List<Supplier> suppliers = rawMaterialDTO.getSuppliers().stream()
+                .map(supplierName -> {
+                    Supplier supplier = supplierService.findByName(supplierName);
+                    if (supplier == null) {
+                        throw new RuntimeException("Supplier not found: " + supplierName);
+                    }
+                    return supplier;
+                })
+                .collect(Collectors.toList());
+
+
+        rawMaterial.setSuppliers(suppliers);
+
+
+        RawMaterial savedMaterial = rawMaterialRepository.save(rawMaterial);
+        return rawMaterialMapper.toDto(savedMaterial);
     }
 
-    public RawMaterial updateRawMaterial(RawMaterialDTO rawMaterial){
-        RawMaterialMapper mapper = new RawMaterialMapper();
-        RawMaterial rawMaterial1 = mapper.fromdtoToEntity(rawMaterial);
 
-        Supplier supplier = supplierRepository.findById(rawMaterial.getSupplierId()).orElse(null);
-        rawMaterial1.setSupplier(supplier);
-        RawMaterial rawMaterial1 = findByIdRawMaterial(rawMaterial.getIdMaterial());
-        rawMaterial1.setName(rawMaterial.getName());
-        rawMaterial1.setStock(rawMaterial.getStock());
-        rawMaterial1.setMinStock(rawMaterial.getMinStock());
-        rawMaterial1.setUnit(rawMaterial.getUnit());
-        rawMaterial1.setSupplier(rawMaterial.getSupplier());
-        return rawMaterialRepository.save(rawMaterial1);
+    public void deleteRawMaterial(Long idRawMaterial) {
+        rawMaterialRepository.deleteById(idRawMaterial);
     }
 
-//    public List<RawMaterial> findAllRawMaterialsByIdSupplier(Long idSupplier){
-//        return  rawMaterialRepository.findAllBySupplierId(idSupplier);
-//    }
+    public RawMaterialDTO updateRawMaterial(Long id, RawMaterialDTO rawMaterial) {
+
+        RawMaterial existingRawMaterial = rawMaterialRepository.findById(id).orElse(null);
+
+        List<Supplier> suppliers = rawMaterial.getSuppliers().stream()
+                .map(supplierName -> {
+                    Supplier supplier = supplierService.findByName(supplierName);
+                    if (supplier == null) {
+                        throw new RuntimeException("Supplier not found: " + supplierName);
+                    }
+                    return supplier;
+                })
+                .collect(Collectors.toList());
+        existingRawMaterial.setName(rawMaterial.getName());
+        existingRawMaterial.setStock(rawMaterial.getStock());
+        existingRawMaterial.setMinStock(rawMaterial.getMinStock());
+        existingRawMaterial.setUnit(rawMaterial.getUnit());
+        existingRawMaterial.setSuppliers(suppliers);
+        RawMaterial result = rawMaterialRepository.save(existingRawMaterial);
+        return rawMaterialMapper.toDto(result);
+    }
+
+    public void deleteOneSupplierFromRawMaterial(Long idRawMaterial, Long idSupplier) {
+        RawMaterial rawMaterial = rawMaterialRepository.findById(idRawMaterial).orElse(null);
+        if (rawMaterial != null) {
+            List<Supplier> updatedSuppliers = rawMaterial.getSuppliers().stream()
+                    .filter(supplier -> !supplier.getIdSupplier().equals(idSupplier))
+                    .collect(Collectors.toList());
+            rawMaterial.setSuppliers(updatedSuppliers);
+            rawMaterialRepository.save(rawMaterial);
+        }
+    }
+
+    public void addSupplierToRawMaterial(Long idRawMaterial, Long idSupplier) {
+        RawMaterial rawMaterial = rawMaterialRepository.findById(idRawMaterial).orElse(null);
+        SupplierDTO supplier = supplierService.findById(idSupplier);
+        if (rawMaterial != null && supplier != null) {
+            List<Supplier> suppliers = rawMaterial.getSuppliers();
+            if (suppliers == null) {
+                suppliers = new ArrayList<>();
+            }
+            suppliers.add(supplierMapper.toEntity(supplier));
+            rawMaterial.setSuppliers(suppliers);
+            rawMaterialRepository.save(rawMaterial);
+        }
+
+    }
+        public RawMaterial findByName(String name){
+            RawMaterial rawMaterial = rawMaterialRepository.findByName(name);
+            return rawMaterial;
+        }
 }

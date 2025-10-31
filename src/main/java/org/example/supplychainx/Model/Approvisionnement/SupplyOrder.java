@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -19,14 +20,15 @@ public class SupplyOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long idOrder;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idSupplier")
+    @JoinColumn(name = "id_supplier")
     @JsonBackReference
     private Supplier supplier;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idMaterial")
-    @JsonBackReference
-    private RawMaterial material;
-    private String orderDate;
+
+    @OneToMany(mappedBy = "supplyOrder" , cascade = CascadeType.ALL)
+    private List<SupplyOrderMaterials> supplyOrderMaterials;
+
+    private LocalDate orderDate;
+    @Enumerated(EnumType.STRING)
     private StatusSupply status;
 
 }

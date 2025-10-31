@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RawMaterialRepository extends JpaRepository<RawMaterial,Long> {
+    RawMaterial findByName(String name);
 }
