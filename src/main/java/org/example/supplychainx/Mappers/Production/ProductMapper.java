@@ -1,7 +1,7 @@
-package org.example.supplychainx.Mappers.Livraison;
+package org.example.supplychainx.Mappers.Production;
 
-import org.example.supplychainx.DTO.Livraison.ProductDTO;
-import org.example.supplychainx.DTO.Livraison.ProductResponseDTO;
+import org.example.supplychainx.DTO.Production.ProductDTO;
+import org.example.supplychainx.DTO.Production.ProductResponseDTO;
 import org.example.supplychainx.Mappers.Approvisionnement.RawMaterialMapper;
 import org.example.supplychainx.Model.Livraison.Product;
 import org.mapstruct.Mapper;

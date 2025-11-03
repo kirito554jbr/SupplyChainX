@@ -23,6 +23,7 @@ public class ProductionOrder {
     @JsonBackReference
     private Product product;
     private Integer quantity;
+    @Enumerated(EnumType.STRING)
     private StatusProduction status;
     private LocalDate startDate;
     private LocalDate endDate;

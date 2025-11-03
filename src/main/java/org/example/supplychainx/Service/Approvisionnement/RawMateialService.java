@@ -126,4 +126,10 @@ public class RawMateialService {
             RawMaterial rawMaterial = rawMaterialRepository.findByName(name);
             return rawMaterial;
         }
+
+    public RawMaterial findEntityById(Long id) {
+        return rawMaterialRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("RawMaterial not found with id: " + id));
+    }
+
 }

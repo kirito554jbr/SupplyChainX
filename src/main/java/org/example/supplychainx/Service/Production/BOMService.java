@@ -1,10 +1,10 @@
-package org.example.supplychainx.Service.Livraison;
+package org.example.supplychainx.Service.Production;
 
 import lombok.AllArgsConstructor;
-import org.example.supplychainx.DTO.Livraison.BOMDTO;
-import org.example.supplychainx.Mappers.Livraison.BOMMapper;
+import org.example.supplychainx.DTO.Production.BOMDTO;
+import org.example.supplychainx.Mappers.Production.BOMMapper;
 import org.example.supplychainx.Model.Livraison.BOM;
-import org.example.supplychainx.Repository.Livraison.BOMRepository;
+import org.example.supplychainx.Repository.Production.BOMRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

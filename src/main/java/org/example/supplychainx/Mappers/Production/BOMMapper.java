@@ -1,6 +1,6 @@
-package org.example.supplychainx.Mappers.Livraison;
+package org.example.supplychainx.Mappers.Production;
 
-import org.example.supplychainx.DTO.Livraison.BOMDTO;
+import org.example.supplychainx.DTO.Production.BOMDTO;
 import org.example.supplychainx.Mappers.Approvisionnement.RawMaterialMapper;
 import org.example.supplychainx.Model.Livraison.BOM;
 import org.mapstruct.Mapper;

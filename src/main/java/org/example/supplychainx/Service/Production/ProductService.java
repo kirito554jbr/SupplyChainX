@@ -1,17 +1,16 @@
-package org.example.supplychainx.Service.Livraison;
+package org.example.supplychainx.Service.Production;
 
 import lombok.AllArgsConstructor;
-import org.example.supplychainx.DTO.Approvisionnement.RawMaterialDTO;
-import org.example.supplychainx.DTO.Livraison.BOMDTO;
-import org.example.supplychainx.DTO.Livraison.ProductDTO;
-import org.example.supplychainx.DTO.Livraison.ProductResponseDTO;
+import org.example.supplychainx.DTO.Production.BOMDTO;
+import org.example.supplychainx.DTO.Production.ProductDTO;
+import org.example.supplychainx.DTO.Production.ProductResponseDTO;
 import org.example.supplychainx.Mappers.Approvisionnement.RawMaterialMapper;
-import org.example.supplychainx.Mappers.Livraison.BOMMapper;
-import org.example.supplychainx.Mappers.Livraison.ProductMapper;
+import org.example.supplychainx.Mappers.Production.BOMMapper;
+import org.example.supplychainx.Mappers.Production.ProductMapper;
 import org.example.supplychainx.Model.Approvisionnement.RawMaterial;
 import org.example.supplychainx.Model.Livraison.BOM;
 import org.example.supplychainx.Model.Livraison.Product;
-import org.example.supplychainx.Repository.Livraison.ProductRepository;
+import org.example.supplychainx.Repository.Production.ProductRepository;
 import org.example.supplychainx.Service.Approvisionnement.RawMateialService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,11 +1,8 @@
-package org.example.supplychainx.DTO.Livraison;
+package org.example.supplychainx.DTO.Production;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.supplychainx.Model.Livraison.BOM;
-import org.example.supplychainx.Model.Livraison.ProductionOrder;
-import org.example.supplychainx.Model.Production.Order;
 
 import java.util.List;
 

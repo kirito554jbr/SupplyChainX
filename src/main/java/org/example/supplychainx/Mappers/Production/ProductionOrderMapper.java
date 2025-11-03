@@ -1,6 +1,5 @@
-package org.example.supplychainx.Mappers.Livraison;
+package org.example.supplychainx.Mappers.Production;
 
-import org.example.supplychainx.Model.Livraison.ProductionOrder;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = {ProductMapper.class})

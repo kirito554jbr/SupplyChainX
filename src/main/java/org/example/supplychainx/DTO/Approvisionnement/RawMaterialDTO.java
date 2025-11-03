@@ -3,6 +3,7 @@ package org.example.supplychainx.DTO.Approvisionnement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.supplychainx.Model.Livraison.BOM;
 
 import java.util.List;
 
@@ -19,5 +20,6 @@ public class RawMaterialDTO {
 //    private Long idSupplier;
 //    private String supplierName;
     private List<String> suppliers;
+//    private List<Integer> boms;
 }
 

@@ -1,10 +1,9 @@
-package org.example.supplychainx.Controller.Livraison;
+package org.example.supplychainx.Controller.Production;
 
 import lombok.AllArgsConstructor;
-import org.example.supplychainx.DTO.Livraison.ProductDTO;
-import org.example.supplychainx.DTO.Livraison.ProductResponseDTO;
-import org.example.supplychainx.Service.Livraison.ProductService;
-import org.springframework.http.RequestEntity;
+import org.example.supplychainx.DTO.Production.ProductDTO;
+import org.example.supplychainx.DTO.Production.ProductResponseDTO;
+import org.example.supplychainx.Service.Production.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
