@@ -1,6 +1,7 @@
 package org.example.supplychainx.Mappers.Approvisionnement;
 
 import org.example.supplychainx.DTO.Approvisionnement.SupplyOrderDTO;
+import org.example.supplychainx.DTO.Approvisionnement.SupplyOrderResponse;
 import org.example.supplychainx.Model.Approvisionnement.RawMaterial;
 import org.example.supplychainx.Model.Approvisionnement.SupplyOrder;
 import org.mapstruct.Mapper;
@@ -16,6 +17,7 @@ public interface SupplyOrderMapper {
 //    @Mapping(target = "supplyOrderMaterials", source = "supplyOrderMaterials")
     SupplyOrder toEntity(SupplyOrderDTO dto);
     SupplyOrderDTO toDto(SupplyOrder entity);
+    SupplyOrderResponse toResponse(SupplyOrder supplyOrder);
 //
 //    default SupplyOrder toDto(SupplyOrder entity) {
 //        if (entity == null) {

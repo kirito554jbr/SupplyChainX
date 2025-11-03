@@ -17,9 +17,7 @@ public class SupplierService {
 
 //    @Autowired
     private SupplierRepository supplierRepository;
-//    private SupplierMapper supplierMapper;
     private SupplierMapper supplierMapper;
-//    private RawMateialService rawMateialService;
 
     public SupplierDTO findById(Long idSupplier){
 //        return (SupplierDTO) supplierRepository.findById(idSupplier).stream()
@@ -54,25 +52,7 @@ public class SupplierService {
     }
 
     public SupplierDTO save(SupplierDTO supplier){
-
-//        Supplier savedSupplier = supplierMapper.toEntity(supplier);
-//
-//        Supplier result = supplierRepository.save(savedSupplier);
-//        return supplierMapper.toDto(result);
-
         Supplier savedSupplier = supplierMapper.toEntity(supplier);
-
-//        List<RawMaterial> rawMaterials = supplier.getRawMaterials().stream()
-//                .map(rawMaterialName -> {
-//                    RawMaterial rawMaterial = rawMateialService.findByName(rawMaterialName);
-//                    if (rawMaterial == null) {
-//                        throw new RuntimeException("Supplier not found: " + rawMaterialName);
-//                    }
-//                    return rawMaterial;
-//                })
-//                .toList();
-//        savedSupplier.setRawMaterials(rawMaterials);
-
         Supplier result = supplierRepository.save(savedSupplier);
         return supplierMapper.toDto(result);
     }
