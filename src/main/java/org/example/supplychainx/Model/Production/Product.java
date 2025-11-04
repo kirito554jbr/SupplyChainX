@@ -1,11 +1,11 @@
-package org.example.supplychainx.Model.Livraison;
+package org.example.supplychainx.Model.Production;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.supplychainx.Model.Production.Order;
+import org.example.supplychainx.Model.Livraison.Order;
 
 import java.util.List;
 

@@ -1,28 +1,30 @@
-package org.example.supplychainx.Model.Livraison;
+package org.example.supplychainx.Model.Production;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.supplychainx.Model.Approvisionnement.RawMaterial;
+
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "boms")
-public class BOM {
+@Table(name = "productionOrders")
+public class ProductionOrder {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idBOM;
+    private Long idProductionOrder;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idProduct")
     @JsonBackReference
     private Product product;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idMaterial")
-    @JsonBackReference
-    private RawMaterial material;
     private Integer quantity;
+    @Enumerated(EnumType.STRING)
+    private StatusProduction status;
+    private LocalDate startDate;
+    private LocalDate endDate;
 }

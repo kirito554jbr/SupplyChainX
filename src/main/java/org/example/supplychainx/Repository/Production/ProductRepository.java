@@ -1,6 +1,6 @@
 package org.example.supplychainx.Repository.Production;
 
-import org.example.supplychainx.Model.Livraison.Product;
+import org.example.supplychainx.Model.Production.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

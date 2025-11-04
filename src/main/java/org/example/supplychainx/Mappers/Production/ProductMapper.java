@@ -3,7 +3,7 @@ package org.example.supplychainx.Mappers.Production;
 import org.example.supplychainx.DTO.Production.ProductDTO;
 import org.example.supplychainx.DTO.Production.ProductResponseDTO;
 import org.example.supplychainx.Mappers.Approvisionnement.RawMaterialMapper;
-import org.example.supplychainx.Model.Livraison.Product;
+import org.example.supplychainx.Model.Production.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

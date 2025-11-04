@@ -3,14 +3,16 @@ package org.example.supplychainx.Service.Production;
 import lombok.AllArgsConstructor;
 import org.example.supplychainx.DTO.Production.BOMDTO;
 import org.example.supplychainx.Mappers.Production.BOMMapper;
-import org.example.supplychainx.Model.Livraison.BOM;
+import org.example.supplychainx.Model.Production.BOM;
 import org.example.supplychainx.Repository.Production.BOMRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class BOMService {
     private final BOMRepository BOMRepository;
     private final BOMMapper bomMapper;

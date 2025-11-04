@@ -1,5 +1,6 @@
 package org.example.supplychainx.Service.Approvisionnement;
 
+import lombok.AllArgsConstructor;
 import org.example.supplychainx.DTO.Approvisionnement.RawMaterialDTO;
 import org.example.supplychainx.DTO.Approvisionnement.SupplierDTO;
 import org.example.supplychainx.Mappers.Approvisionnement.RawMaterialMapper;
@@ -9,6 +10,7 @@ import org.example.supplychainx.Model.Approvisionnement.Supplier;
 import org.example.supplychainx.Repository.Approvisionnement.RawMaterialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,8 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 
 @Service
+@AllArgsConstructor
+@Transactional
 public class RawMateialService {
 
     //    @Autowired
@@ -27,12 +31,6 @@ public class RawMateialService {
     private SupplierService supplierService;
     private SupplierMapper supplierMapper;
 
-    public RawMateialService(RawMaterialRepository rawMaterialRepository, RawMaterialMapper rawMaterialMapper, SupplierService supplierService, SupplierMapper supplierMapper) {
-        this.rawMaterialRepository = rawMaterialRepository;
-        this.rawMaterialMapper = rawMaterialMapper;
-        this.supplierService = supplierService;
-        this.supplierMapper = supplierMapper;
-    }
 
     public RawMaterialDTO findByIdRawMaterial(Long idRawMaterial) {
         RawMaterial rawMaterial = rawMaterialRepository.findById(idRawMaterial).orElse(null);
