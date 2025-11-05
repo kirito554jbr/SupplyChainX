@@ -7,12 +7,14 @@ import org.example.supplychainx.Model.Approvisionnement.RawMaterial;
 import org.example.supplychainx.Model.Approvisionnement.Supplier;
 import org.example.supplychainx.Repository.Approvisionnement.SupplierRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class SupplierService {
 
 //    @Autowired

@@ -14,11 +14,7 @@ import java.util.List;
 public class SupplyOrderDTO {
 
     private Long idOrder;
-//    private String supplierId;
     private String supplierName;
-//    private String materialId;
-//    private String materialName;
-//    private List<String> supplyOrderMaterials;
     private LocalDate orderDate;
     private StatusSupply status;
 }

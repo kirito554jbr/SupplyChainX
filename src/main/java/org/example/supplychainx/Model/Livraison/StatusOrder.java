@@ -1,4 +1,4 @@
-package org.example.supplychainx.Model.Production;
+package org.example.supplychainx.Model.Livraison;
 
 public enum StatusOrder {
     EN_PREPARATION,

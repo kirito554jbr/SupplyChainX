@@ -11,6 +11,7 @@ import org.example.supplychainx.Repository.Approvisionnement.SupplierRepository;
 import org.example.supplychainx.Repository.Approvisionnement.SupplyOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class SupplyOrderService {
 
     private final SupplierRepository supplierService;
