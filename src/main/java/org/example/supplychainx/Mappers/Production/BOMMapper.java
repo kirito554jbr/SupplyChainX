@@ -1,0 +1,12 @@
+package org.example.supplychainx.Mappers.Production;
+
+import org.example.supplychainx.DTO.Production.BOMDTO;
+import org.example.supplychainx.Mappers.Approvisionnement.RawMaterialMapper;
+import org.example.supplychainx.Model.Production.BOM;
+import org.mapstruct.Mapper;
+
+@Mapper(componentModel = "spring", uses = {ProductMapper.class, RawMaterialMapper.class})
+public interface BOMMapper {
+    BOM toEntity(BOMDTO dto);
+    BOMDTO toDto(BOM entity);
+}
