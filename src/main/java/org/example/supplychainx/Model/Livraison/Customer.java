@@ -1,4 +1,4 @@
-package org.example.supplychainx.Model.Production;
+package org.example.supplychainx.Model.Livraison;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idCustomer;
+    private Long idCustomer;
     private String name;
     private String adress;
     private String city;

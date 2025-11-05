@@ -1,4 +1,4 @@
-package org.example.supplychainx.Model.Production;
+package org.example.supplychainx.Model.Livraison;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public class Delivery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idDelivery;
+    private Long idDelivery;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idOrder")
     private Order order;
