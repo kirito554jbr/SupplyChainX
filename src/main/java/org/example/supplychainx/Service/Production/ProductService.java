@@ -12,8 +12,10 @@ import org.example.supplychainx.Model.Production.BOM;
 import org.example.supplychainx.Model.Production.Product;
 import org.example.supplychainx.Repository.Production.ProductRepository;
 import org.example.supplychainx.Service.Approvisionnement.RawMateialService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -111,4 +113,10 @@ public ProductResponseDTO save(ProductDTO productDTO) {
                 .toList();
     }
 
+    public List<ProductResponseDTO> findByNameContaining(String name) {
+        List<Product> products = productRepository.findByNameContainingIgnoreCase(name);
+        return products.stream()
+                .map(productMapper::toResponseDTO)
+                .toList();
+    }
 }

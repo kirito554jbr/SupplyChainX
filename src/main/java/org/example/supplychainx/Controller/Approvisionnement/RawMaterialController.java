@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.example.supplychainx.DTO.Approvisionnement.RawMaterialDTO;
 import org.example.supplychainx.Model.Approvisionnement.RawMaterial;
 import org.example.supplychainx.Service.Approvisionnement.RawMateialService;
+import org.example.supplychainx.annotation.RequiresRole;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ public class RawMaterialController {
 
 
     @GetMapping
+    @RequiresRole({"ADMIN","SUPERVISEUR_LOGISTIQUE","PLANIFICATEUR"})
     public ResponseEntity<List<RawMaterialDTO>> getRawMaterials() {
         return ResponseEntity.ok(rawMaterialService.findAllRawMaterials());
     }
@@ -34,18 +36,21 @@ public class RawMaterialController {
     }
 
     @PostMapping
+    @RequiresRole({"ADMIN","GESTIONNAIRE_APPROVISIONNEMENT"})
     public ResponseEntity<RawMaterialDTO> createRawMaterial(@RequestBody RawMaterialDTO rawMaterial) {
         RawMaterialDTO rawMaterial1 = rawMaterialService.saveRawMaterial(rawMaterial);
         return ResponseEntity.status(201).body(rawMaterial1);
     }
 
     @PutMapping("/{id}")
+    @RequiresRole({"ADMIN","GESTIONNAIRE_APPROVISIONNEMENT"})
     public ResponseEntity<RawMaterialDTO> updateRawMaterial(@PathVariable Long id, @RequestBody RawMaterialDTO rawMaterial) {
         RawMaterialDTO rawMaterial1 = rawMaterialService.updateRawMaterial(id, rawMaterial);
         return ResponseEntity.ok(rawMaterial1);
     }
 
     @DeleteMapping("/{id}")
+    @RequiresRole({"ADMIN","GESTIONNAIRE_APPROVISIONNEMENT"})
     public ResponseEntity<String> deleteRawMaterial(@PathVariable Long id) {
         rawMaterialService.deleteRawMaterial(id);
         return ResponseEntity.ok("success");
@@ -61,6 +66,13 @@ public class RawMaterialController {
     public ResponseEntity<String> addSupplierToRawMaterial(@PathVariable Long idRawMaterial, @PathVariable Long idSupplier) {
         rawMaterialService.addSupplierToRawMaterial(idRawMaterial, idSupplier);
         return ResponseEntity.ok("success");
+    }
+
+    @GetMapping("/filter/low-stock")
+    @RequiresRole({"ADMIN","SUPERVISEUR_LOGISTIQUE"})
+    public ResponseEntity<List<RawMaterialDTO>> FiltreMaterialsLowerThanStockMin() {
+        List<RawMaterialDTO> rawMaterials = rawMaterialService.getRawMaterialsWithLowStock();
+        return ResponseEntity.ok(rawMaterials);
     }
 
 

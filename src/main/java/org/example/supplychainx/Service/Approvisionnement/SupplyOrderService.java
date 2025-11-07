@@ -10,8 +10,10 @@ import org.example.supplychainx.Repository.Approvisionnement.RawMaterialReposito
 import org.example.supplychainx.Repository.Approvisionnement.SupplierRepository;
 import org.example.supplychainx.Repository.Approvisionnement.SupplyOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -51,18 +53,7 @@ public class SupplyOrderService {
         return orderDTOS;
     }
 
-//    public SupplyOrderDTO save(SupplyOrderDTO supplyOrder) {
-//        SupplyOrder supplyOrderEntity = supplyOrderMapper.toEntity(supplyOrder);
-//
-//        Supplier supplier = supplierService.findByName(supplyOrder.getSupplierName());
-//        supplyOrderEntity.setSupplier(supplier);
-//        SupplyOrder result = supplyOrderRepository.save(supplyOrderEntity);
-////
-////        return supplyOrderMapper.toDto(result);
-//        SupplyOrderDTO resultDTO = supplyOrderMapper.toDto(result);
-//        resultDTO.setSupplierName(supplier.getName());
-//        return resultDTO;
-//    }
+
 
 public SupplyOrderResponse save(SupplyOrderRequest request) {
 
@@ -97,8 +88,16 @@ public SupplyOrderResponse save(SupplyOrderRequest request) {
     return supplyOrderMapper.toResponse(supplyOrder1);
 
 }
-    public void delete(SupplyOrder supplyOrder) {
-        supplyOrderRepository.delete(supplyOrder);
+    public void delete(Long id) {
+        SupplyOrder order = supplyOrderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        if (order.getStatus() == StatusSupply.RECUE) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Cannot delete delivered order");
+        }
+
+        supplyOrderRepository.deleteById(id);
     }
 
     public SupplyOrderDTO update(Long id, SupplyOrderDTO supplyOrder) {

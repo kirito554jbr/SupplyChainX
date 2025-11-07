@@ -6,8 +6,10 @@ import org.example.supplychainx.Mappers.Approvisionnement.SupplierMapper;
 import org.example.supplychainx.Model.Approvisionnement.RawMaterial;
 import org.example.supplychainx.Model.Approvisionnement.Supplier;
 import org.example.supplychainx.Repository.Approvisionnement.SupplierRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,7 +62,16 @@ public class SupplierService {
     }
 
     public void deleteById(Long id){
+        Supplier supplier = supplierRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+
+        if (supplier.getSupplyOrders() != null && !supplier.getSupplyOrders().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Cannot delete supplier with active orders");
+        }
+
         supplierRepository.deleteById(id);
+//        supplierRepository.deleteById(id);
     }
 
     public SupplierDTO update(Long id, SupplierDTO supplier){
