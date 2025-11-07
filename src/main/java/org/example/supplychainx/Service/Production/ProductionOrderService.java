@@ -58,4 +58,20 @@ public class ProductionOrderService {
     public void deleteProductionOrder(Long id) {
         productionOrderRepository.deleteById(id);
     }
+
+//    public boolean checkMaterialAvailability(Long orderId) {
+//        ProductionOrder order = productionOrderRepository.findById(orderId)
+//                .orElseThrow(() -> new RuntimeException("Production order not found"));
+//
+//        return order.getProduct().getBoms().stream()
+//                .allMatch(rm -> rm.getQuantity() >= rm.getRequiredQuantity());
+//    }
+//
+//
+//    public int calculateEstimatedTime(Long orderId) {
+//        ProductionOrder order = productionOrderRepository.findById(orderId)
+//                .orElseThrow(() -> new RuntimeException("Production order not found"));
+//
+//        return order.getQuantity() * order.getProduct().getProductionTimePerUnit();
+//    }
 }

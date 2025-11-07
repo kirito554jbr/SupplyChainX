@@ -130,4 +130,12 @@ public class RawMateialService {
                 .orElseThrow(() -> new RuntimeException("RawMaterial not found with id: " + id));
     }
 
+    public List<RawMaterialDTO> getRawMaterialsWithLowStock() {
+        List<RawMaterial> rawMaterials = rawMaterialRepository.findAll();
+        List<RawMaterialDTO> lowStockMaterials = rawMaterials.stream()
+                .filter(rm -> rm.getStock() < rm.getMinStock())
+                .map(rm -> rawMaterialMapper.toDto(rm))
+                .collect(toList());
+        return lowStockMaterials;
+    }
 }

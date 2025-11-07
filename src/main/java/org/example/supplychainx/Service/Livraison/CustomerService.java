@@ -34,8 +34,8 @@ public class CustomerService {
 
     public CustomerDTO save(CustomerDTO customerDTO) {
         Customer customer = customerMapper.toEntity(customerDTO);
-        Order order = orderRepository.findById(customerDTO.getOrder_id()).orElse(null);
-        customer.setOrder(order);
+//        Order order = orderRepository.findById(customerDTO.getOrder_id()).orElse(null);
+//        customer.setOrder(order);
         Customer savedCustomer = customerRepository.save(customer);
         return customerMapper.toDto(savedCustomer);
     }

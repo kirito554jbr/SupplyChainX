@@ -55,4 +55,17 @@ public class DeliveryService {
     public void delete(Long id) {
         deliveryRepository.deleteById(id);
     }
+
+    private Double calculateTotalCost(Order order) {
+        Double productCost = order.getProduct().getCost() * order.getQuantity();
+        Double shippingCost = calculateShippingCost(order);
+        return productCost + shippingCost;
+    }
+
+    private Double calculateShippingCost(Order order) {
+        // Example: flat rate or distance-based calculation
+        return Double.valueOf(50.0);
+    }
+
+
 }

@@ -19,14 +19,20 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idOrder;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idCustomer")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_customer")
     private Customer customer;
+
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id" )
     private Product product;
+
     private Integer quantity;
+
     @Enumerated(EnumType.STRING)
     private StatusOrder status;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Delivery> deliveries;

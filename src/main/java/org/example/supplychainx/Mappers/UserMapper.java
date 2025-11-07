@@ -1,5 +1,6 @@
 package org.example.supplychainx.Mappers;
 
+import org.example.supplychainx.DTO.UserRequestDTO;
 import org.example.supplychainx.DTO.UserResponseDTO;
 import org.example.supplychainx.Model.User;
 import org.mapstruct.Mapper;
@@ -8,4 +9,5 @@ import org.mapstruct.Mapper;
 public interface UserMapper {
     UserResponseDTO toDto(User user);
     User toEntity(UserResponseDTO userResponseDTO);
+    User toEntityRequest(UserRequestDTO userResponseDTO);
 }
