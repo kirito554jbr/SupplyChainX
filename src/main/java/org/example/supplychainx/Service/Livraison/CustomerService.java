@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.example.supplychainx.DTO.Livraison.CustomerDTO;
 import org.example.supplychainx.Mappers.Livraison.CustomerMapper;
 import org.example.supplychainx.Model.Livraison.Customer;
-import org.example.supplychainx.Model.Livraison.Order;
 import org.example.supplychainx.Repository.Livraison.CustomerRepository;
 import org.example.supplychainx.Repository.Livraison.OrderRepository;
 import org.springframework.stereotype.Service;
@@ -34,8 +33,6 @@ public class CustomerService {
 
     public CustomerDTO save(CustomerDTO customerDTO) {
         Customer customer = customerMapper.toEntity(customerDTO);
-//        Order order = orderRepository.findById(customerDTO.getOrder_id()).orElse(null);
-//        customer.setOrder(order);
         Customer savedCustomer = customerRepository.save(customer);
         return customerMapper.toDto(savedCustomer);
     }

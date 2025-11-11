@@ -3,7 +3,6 @@ package org.example.supplychainx.Service.Approvisionnement;
 import lombok.AllArgsConstructor;
 import org.example.supplychainx.DTO.Approvisionnement.SupplierDTO;
 import org.example.supplychainx.Mappers.Approvisionnement.SupplierMapper;
-import org.example.supplychainx.Model.Approvisionnement.RawMaterial;
 import org.example.supplychainx.Model.Approvisionnement.Supplier;
 import org.example.supplychainx.Repository.Approvisionnement.SupplierRepository;
 import org.springframework.http.HttpStatus;
@@ -19,22 +18,18 @@ import java.util.stream.Collectors;
 @Transactional
 public class SupplierService {
 
-//    @Autowired
+
     private SupplierRepository supplierRepository;
     private SupplierMapper supplierMapper;
 
     public SupplierDTO findById(Long idSupplier){
-//        return (SupplierDTO) supplierRepository.findById(idSupplier).stream()
-//                .map(supplierMapper::fromEntityToDto);
         Supplier savedSupplier = supplierRepository.findById(idSupplier).get();
         SupplierDTO supplier = supplierMapper.toDto(savedSupplier);
         return supplier;
-
     }
 
     public Supplier findByName(String name){
         Supplier savedSupplier = supplierRepository.findByName(name);
-//        SupplierDTO supplier = supplierMapper.toDto(savedSupplier);
         return savedSupplier;
     }
 
@@ -45,9 +40,6 @@ public class SupplierService {
     }
 
     public List<SupplierDTO> findAll(){
-//      return  supplierRepository.findAll().stream()
-//                .map(supplierMapper::fromEntityToDto)
-//                .collect(Collectors.toList());
         List<Supplier> suppliers = supplierRepository.findAll();
         List<SupplierDTO> supplierDTOS = suppliers.stream()
                 .map(supplier -> supplierMapper.toDto(supplier))
@@ -71,7 +63,6 @@ public class SupplierService {
         }
 
         supplierRepository.deleteById(id);
-//        supplierRepository.deleteById(id);
     }
 
     public SupplierDTO update(Long id, SupplierDTO supplier){

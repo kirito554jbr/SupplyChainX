@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.supplychainx.Model.Approvisionnement.StatusSupply;
-
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @AllArgsConstructor

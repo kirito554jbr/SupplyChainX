@@ -1,10 +1,9 @@
 package org.example.supplychainx.DTO.Livraison;
 
-import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.supplychainx.Model.Livraison.Order;
 import org.example.supplychainx.Model.Livraison.StatusDelivery;
 
 import java.time.LocalDate;

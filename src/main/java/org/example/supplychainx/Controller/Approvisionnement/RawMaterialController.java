@@ -2,7 +2,6 @@ package org.example.supplychainx.Controller.Approvisionnement;
 
 import lombok.AllArgsConstructor;
 import org.example.supplychainx.DTO.Approvisionnement.RawMaterialDTO;
-import org.example.supplychainx.Model.Approvisionnement.RawMaterial;
 import org.example.supplychainx.Service.Approvisionnement.RawMateialService;
 import org.example.supplychainx.annotation.RequiresRole;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/rawMaterials")
-@CrossOrigin(origins = "*")
 @AllArgsConstructor
 public class RawMaterialController {
 
@@ -59,13 +57,13 @@ public class RawMaterialController {
     @DeleteMapping("/{idRawMaterial}/suppliers/{idSupplier}")
     public ResponseEntity<String> deleteOneSupplierFromRawMaterial(@PathVariable Long idRawMaterial,@PathVariable Long idSupplier) {
         rawMaterialService.deleteOneSupplierFromRawMaterial(idRawMaterial, idSupplier);
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok("Supplier deleted with success");
     }
 
     @PostMapping("/{idRawMaterial}/suppliers/{idSupplier}")
     public ResponseEntity<String> addSupplierToRawMaterial(@PathVariable Long idRawMaterial, @PathVariable Long idSupplier) {
         rawMaterialService.addSupplierToRawMaterial(idRawMaterial, idSupplier);
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok("Supplier added with success");
     }
 
     @GetMapping("/filter/low-stock")

@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import org.example.supplychainx.DTO.Approvisionnement.RawMaterialDTO;
 import org.example.supplychainx.DTO.Approvisionnement.SupplierDTO;
 import org.example.supplychainx.Service.Approvisionnement.SupplierService;
 import org.example.supplychainx.annotation.RequiresRole;
@@ -19,7 +18,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/suppliers")
-@CrossOrigin(origins = "*")
 @AllArgsConstructor
 @Tag(name = "Supplier Management", description = "APIs for managing suppliers in the supply chain")
 public class SupplierController {

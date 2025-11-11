@@ -37,12 +37,6 @@ public class DeliveryController {
         DeliveryDTO deliveryDTO = deliveryService.findById(id);
         return ResponseEntity.ok(deliveryDTO);
     }
-
-//    public ResponseEntity<DeliveryDTO> findDeliveryByOrderId(Long id) {
-//        DeliveryDTO deliveryDTO = deliveryService.findByOrderId(id);
-//        return ResponseEntity.ok(deliveryDTO);
-//    }
-
     @Operation(summary = "Get all deliveries", description = "Retrieve a list of all deliveries")
     @ApiResponse(responseCode = "200", description = "List of deliveries retrieved successfully")
     @GetMapping

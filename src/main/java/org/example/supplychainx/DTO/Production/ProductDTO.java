@@ -16,6 +16,4 @@ public class ProductDTO {
     private Double cost;
     private Integer stock;
     private List<BOMDTO> boms;
-//    private List<Order> orders;
-//    private List<ProductionOrder> productionOrders;
 }

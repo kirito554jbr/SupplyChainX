@@ -11,18 +11,15 @@ import lombok.AllArgsConstructor;
 import org.example.supplychainx.DTO.Approvisionnement.SupplyOrderDTO;
 import org.example.supplychainx.DTO.Approvisionnement.SupplyOrderRequest;
 import org.example.supplychainx.DTO.Approvisionnement.SupplyOrderResponse;
-import org.example.supplychainx.Model.Approvisionnement.SupplyOrder;
 import org.example.supplychainx.Service.Approvisionnement.SupplyOrderService;
 import org.example.supplychainx.annotation.RequiresRole;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/supply-orders")
-@CrossOrigin(origins = "*")
 @AllArgsConstructor
 @Tag(name = "Supply Order Management", description = "APIs for managing supply orders from suppliers")
 public class SupplyOrderController {
