@@ -9,7 +9,6 @@ import org.example.supplychainx.Model.Approvisionnement.*;
 import org.example.supplychainx.Repository.Approvisionnement.RawMaterialRepository;
 import org.example.supplychainx.Repository.Approvisionnement.SupplierRepository;
 import org.example.supplychainx.Repository.Approvisionnement.SupplyOrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -109,7 +107,6 @@ public SupplyOrderResponse save(SupplyOrderRequest request) {
         if (existingOrder != null) {
 
             existingOrder.setSupplier(supplier);
-//            existingOrder.setMaterial(supplyOrder1.getMaterial());
             existingOrder.setOrderDate(supplyOrder1.getOrderDate());
             existingOrder.setStatus(supplyOrder.getStatus());
             SupplyOrder supplyOrder2 = supplyOrderRepository.save(existingOrder);

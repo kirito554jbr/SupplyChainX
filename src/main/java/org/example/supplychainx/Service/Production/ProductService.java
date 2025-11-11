@@ -12,10 +12,8 @@ import org.example.supplychainx.Model.Production.BOM;
 import org.example.supplychainx.Model.Production.Product;
 import org.example.supplychainx.Repository.Production.ProductRepository;
 import org.example.supplychainx.Service.Approvisionnement.RawMateialService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -74,17 +72,15 @@ public ProductResponseDTO save(ProductDTO productDTO) {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
 
-        // Update product fields
         existingProduct.setName(productDTO.getName());
         existingProduct.setProductionTime(productDTO.getProductionTime());
         existingProduct.setCost(productDTO.getCost());
         existingProduct.setStock(productDTO.getStock());
         Product updatedProduct = productRepository.save(existingProduct);
 
-        // Delete old BOMs
+
         bomService.deleteByProductId(id);
 
-        // Create new BOMs if provided
         if (productDTO.getBoms() != null && !productDTO.getBoms().isEmpty()) {
             List<BOMDTO> bomDTOs = productDTO.getBoms();
 

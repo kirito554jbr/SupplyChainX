@@ -1,0 +1,15 @@
+# Ignore build artifacts, IDE files and local configs to reduce Docker build context
+target/
+.idea/
+*.iml
+*.log
+.git/
+.DS_Store
+# Optional: exclude local maven repository if accidentally copied into the project
+.m2/
+
+# If you have any generated files or large folders you don't want in the image, add them here
+# For example:
+# node_modules/
+# build/
+

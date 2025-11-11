@@ -26,15 +26,6 @@ public class Supplier {
     private Double rating;
     @Column(nullable = false)
     private Integer leadTime;
-
-//    @ManyToMany
-//    @JoinTable(
-//            name = "material_suppliers",
-//            joinColumns = @JoinColumn(name = "id_supplier"),
-//            inverseJoinColumns = @JoinColumn(name = "id_material")
-//    )
-//    private List<RawMaterial> rawMaterials;
-
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<SupplyOrder> supplyOrders;

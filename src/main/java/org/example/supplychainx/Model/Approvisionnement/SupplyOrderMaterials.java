@@ -13,9 +13,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "supplyMaterials")
 public class SupplyOrderMaterials {
 
-//    @EmbeddedId
-//    private SupplyMaterialsId id;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idSupplyMaterial;
@@ -24,12 +21,10 @@ public class SupplyOrderMaterials {
     private Integer quantity;
 
     @ManyToOne
-//    @MapsId("idSupplier")
     @JoinColumn(name = "id_supplier")
     private SupplyOrder supplyOrder;
 
     @ManyToOne
-//    @MapsId("idMaterial")
     @JoinColumn(name = "id_material")
     private RawMaterial rawMaterial;
 

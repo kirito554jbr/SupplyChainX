@@ -58,12 +58,11 @@ public class DeliveryService {
 
     private Double calculateTotalCost(Order order) {
         Double productCost = order.getProduct().getCost() * order.getQuantity();
-        Double shippingCost = calculateShippingCost(order);
+        Double shippingCost = calculateShippingCost();
         return productCost + shippingCost;
     }
 
-    private Double calculateShippingCost(Order order) {
-        // Example: flat rate or distance-based calculation
+    private Double calculateShippingCost() {
         return Double.valueOf(50.0);
     }
 

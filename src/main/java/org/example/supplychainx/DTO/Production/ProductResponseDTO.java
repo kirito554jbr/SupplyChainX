@@ -13,15 +13,4 @@ public class ProductResponseDTO {
     private Integer productionTime;
     private Double cost;
     private Integer stock;
-//    private List<BOMsub> rawMaterials;
-//
-//    @Data
-//    @AllArgsConstructor
-//    @NoArgsConstructor
-//    public static class BOMsub {
-//        private Long IdBOM;
-//        private String productName;
-//        private String materialName;
-//        private int quantity;
-//    }
 }

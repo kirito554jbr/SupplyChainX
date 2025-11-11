@@ -1,10 +1,8 @@
 package org.example.supplychainx.DTO.Production;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.example.supplychainx.Model.Production.Product;
 import org.example.supplychainx.Model.Production.StatusProduction;
 
 import java.time.LocalDate;

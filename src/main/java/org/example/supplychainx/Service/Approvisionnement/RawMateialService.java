@@ -8,7 +8,6 @@ import org.example.supplychainx.Mappers.Approvisionnement.SupplierMapper;
 import org.example.supplychainx.Model.Approvisionnement.RawMaterial;
 import org.example.supplychainx.Model.Approvisionnement.Supplier;
 import org.example.supplychainx.Repository.Approvisionnement.RawMaterialRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,8 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -25,7 +22,6 @@ import static java.util.stream.Collectors.toList;
 @Transactional
 public class RawMateialService {
 
-    //    @Autowired
     private RawMaterialRepository rawMaterialRepository;
     private RawMaterialMapper rawMaterialMapper;
     private SupplierService supplierService;

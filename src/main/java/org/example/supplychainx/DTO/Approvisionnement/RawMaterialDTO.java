@@ -16,9 +16,6 @@ public class RawMaterialDTO {
     private Integer stock;
     private Integer MinStock;
     private String unit;
-//    private Long idSupplier;
-//    private String supplierName;
     private List<String> suppliers;
-//    private List<Integer> boms;
 }
 

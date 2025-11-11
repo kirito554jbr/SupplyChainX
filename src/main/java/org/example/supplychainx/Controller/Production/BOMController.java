@@ -64,7 +64,6 @@ public class BOMController {
                     description = "BOM details to create", required = true,
                     content = @Content(schema = @Schema(implementation = BOMDTO.class)))
             @RequestBody BOMDTO bomDTO) {
-//        System.out.println("Received BOMDTO: " + bomDTO);
         BOMDTO created = BOMService.createBOM(bomDTO);
         return ResponseEntity.status(201).body(created);
     }
