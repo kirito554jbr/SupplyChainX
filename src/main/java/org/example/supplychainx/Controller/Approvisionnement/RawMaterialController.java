@@ -26,8 +26,8 @@ public class RawMaterialController {
     @GetMapping("/{id}")
     public ResponseEntity<RawMaterialDTO> getRawMaterialById(@PathVariable Long id) {
         try {
-        RawMaterialDTO rawMaterialDTO = rawMaterialService.findByIdRawMaterial(id);
-        return ResponseEntity.ok(rawMaterialDTO);
+            RawMaterialDTO rawMaterialDTO = rawMaterialService.findByIdRawMaterial(id);
+            return ResponseEntity.ok(rawMaterialDTO);
         }catch (RuntimeException ex) {
             return ResponseEntity.notFound().build();
         }
