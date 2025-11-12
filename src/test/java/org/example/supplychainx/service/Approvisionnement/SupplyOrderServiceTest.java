@@ -169,4 +169,215 @@ class SupplyOrderServiceTest {
         assertNotNull(result);
         verify(supplyOrderRepository, times(1)).save(any(SupplyOrder.class));
     }
+
+    // Lambda Tests for Save Method
+    @Test
+    void testSave_SupplierLambda_ThrowsException() {
+        SupplyOrderRequest request = new SupplyOrderRequest();
+        request.setDate(LocalDate.now());
+        request.setSupplierId(999L);
+
+        when(supplierRepository.findById(999L)).thenReturn(Optional.empty());
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+            () -> supplyOrderService.save(request));
+
+        assertEquals("Supplier not found.", exception.getMessage());
+        verify(supplierRepository, times(1)).findById(999L);
+        verify(supplyOrderRepository, never()).save(any());
+    }
+
+    @Test
+    void testSave_RawMaterialLambda_ThrowsException() {
+        SupplyOrderRequest request = new SupplyOrderRequest();
+        request.setDate(LocalDate.now());
+        request.setSupplierId(1L);
+
+        SupplyOrderRequest.RawMaterialQuantity rmq = new SupplyOrderRequest.RawMaterialQuantity();
+        rmq.setRawMaterialId(999L);
+        rmq.setQuantity(50);
+        request.setRawMaterials(Arrays.asList(rmq));
+
+        when(supplierRepository.findById(1L)).thenReturn(Optional.of(supplier));
+        when(rawMaterialRepository.findById(999L)).thenReturn(Optional.empty());
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+            () -> supplyOrderService.save(request));
+
+        assertEquals("Raw material with ID 999 not found.", exception.getMessage());
+        verify(rawMaterialRepository, times(1)).findById(999L);
+        verify(supplyOrderRepository, never()).save(any());
+    }
+
+    @Test
+    void testSave_MultipleRawMaterials_LambdaIteration() {
+        SupplyOrderRequest request = new SupplyOrderRequest();
+        request.setDate(LocalDate.now());
+        request.setSupplierId(1L);
+
+        RawMaterial rawMaterial2 = new RawMaterial();
+        rawMaterial2.setIdMaterial(2L);
+        rawMaterial2.setName("Aluminum");
+
+        SupplyOrderRequest.RawMaterialQuantity rmq1 = new SupplyOrderRequest.RawMaterialQuantity();
+        rmq1.setRawMaterialId(1L);
+        rmq1.setQuantity(50);
+
+        SupplyOrderRequest.RawMaterialQuantity rmq2 = new SupplyOrderRequest.RawMaterialQuantity();
+        rmq2.setRawMaterialId(2L);
+        rmq2.setQuantity(75);
+
+        request.setRawMaterials(Arrays.asList(rmq1, rmq2));
+
+        SupplyOrderResponse response = new SupplyOrderResponse();
+        response.setId_order(1L);
+
+        when(supplierRepository.findById(1L)).thenReturn(Optional.of(supplier));
+        when(rawMaterialRepository.findById(1L)).thenReturn(Optional.of(rawMaterial));
+        when(rawMaterialRepository.findById(2L)).thenReturn(Optional.of(rawMaterial2));
+        when(supplyOrderRepository.save(any(SupplyOrder.class))).thenReturn(supplyOrder);
+        when(supplyOrderMapper.toResponse(any(SupplyOrder.class))).thenReturn(response);
+
+        SupplyOrderResponse result = supplyOrderService.save(request);
+
+        assertNotNull(result);
+        verify(rawMaterialRepository, times(1)).findById(1L);
+        verify(rawMaterialRepository, times(1)).findById(2L);
+        verify(supplyOrderRepository, times(1)).save(any(SupplyOrder.class));
+    }
+
+    // Lambda Tests for Update Method
+    @Test
+    void testUpdate_OrderNotFoundLambda_ThrowsException() {
+        when(supplyOrderMapper.toEntity(supplyOrderDTO)).thenReturn(supplyOrder);
+        when(supplyOrderRepository.findById(999L)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> supplyOrderService.update(999L, supplyOrderDTO));
+
+        assertEquals("SupplierOrder not found with id: 999", exception.getMessage());
+        verify(supplyOrderRepository, times(1)).findById(999L);
+        verify(supplyOrderRepository, never()).save(any());
+    }
+
+    @Test
+    void testUpdate_WithSupplierName_Success() {
+        Supplier newSupplier = new Supplier();
+        newSupplier.setIdSupplier(2L);
+        newSupplier.setName("Updated Supplier");
+
+        supplyOrderDTO.setSupplierName("Updated Supplier");
+
+        when(supplyOrderMapper.toEntity(supplyOrderDTO)).thenReturn(supplyOrder);
+        when(supplyOrderRepository.findById(1L)).thenReturn(Optional.of(supplyOrder));
+        when(supplierRepository.findByName("Updated Supplier")).thenReturn(newSupplier);
+        when(supplyOrderRepository.save(any(SupplyOrder.class))).thenReturn(supplyOrder);
+        when(supplyOrderMapper.toDto(any(SupplyOrder.class))).thenReturn(supplyOrderDTO);
+
+        SupplyOrderDTO result = supplyOrderService.update(1L, supplyOrderDTO);
+
+        assertNotNull(result);
+        assertEquals("Updated Supplier", result.getSupplierName());
+        verify(supplierRepository, times(1)).findByName("Updated Supplier");
+        verify(supplyOrderRepository, times(1)).save(any(SupplyOrder.class));
+    }
+
+    // Lambda Tests for Delete Method
+    @Test
+    void testDelete_OrderNotFoundLambda_ThrowsException() {
+        when(supplyOrderRepository.findById(999L)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> supplyOrderService.delete(999L));
+
+        assertEquals("Order not found", exception.getMessage());
+        verify(supplyOrderRepository, times(1)).findById(999L);
+        verify(supplyOrderRepository, never()).deleteById(any());
+    }
+
+    @Test
+    void testDelete_PendingOrder_Success() {
+        supplyOrder.setStatus(StatusSupply.EN_ATTENTE);
+        when(supplyOrderRepository.findById(1L)).thenReturn(Optional.of(supplyOrder));
+
+        supplyOrderService.delete(1L);
+
+        verify(supplyOrderRepository, times(1)).deleteById(1L);
+    }
+
+
+
+    // Lambda Tests for FindAll Method
+    @Test
+    void testFindAll_WithMultipleOrders_LambdaMapping() {
+        Supplier supplier2 = new Supplier();
+        supplier2.setIdSupplier(2L);
+        supplier2.setName("Second Supplier");
+
+        SupplyOrder supplyOrder2 = new SupplyOrder();
+        supplyOrder2.setIdOrder(2L);
+        supplyOrder2.setSupplier(supplier2);
+        supplyOrder2.setOrderDate(LocalDate.now().minusDays(1));
+        supplyOrder2.setStatus(StatusSupply.RECUE);
+
+        SupplyOrderDTO supplyOrderDTO2 = new SupplyOrderDTO();
+        supplyOrderDTO2.setIdOrder(2L);
+        supplyOrderDTO2.setSupplierName("Second Supplier");
+        supplyOrderDTO2.setOrderDate(LocalDate.now().minusDays(1));
+        supplyOrderDTO2.setStatus(StatusSupply.RECUE);
+
+        List<SupplyOrder> orders = Arrays.asList(supplyOrder, supplyOrder2);
+
+        when(supplyOrderRepository.findAll()).thenReturn(orders);
+        when(supplyOrderMapper.toDto(supplyOrder)).thenReturn(supplyOrderDTO);
+        when(supplyOrderMapper.toDto(supplyOrder2)).thenReturn(supplyOrderDTO2);
+
+        List<SupplyOrderDTO> result = supplyOrderService.findAll();
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals("Test Supplier", result.get(0).getSupplierName());
+        assertEquals("Second Supplier", result.get(1).getSupplierName());
+        verify(supplyOrderRepository, times(1)).findAll();
+        verify(supplyOrderMapper, times(1)).toDto(supplyOrder);
+        verify(supplyOrderMapper, times(1)).toDto(supplyOrder2);
+    }
+
+    @Test
+    void testFindAll_WithNullSupplier_LambdaHandling() {
+        SupplyOrder orderWithoutSupplier = new SupplyOrder();
+        orderWithoutSupplier.setIdOrder(3L);
+        orderWithoutSupplier.setSupplier(null);
+        orderWithoutSupplier.setOrderDate(LocalDate.now());
+        orderWithoutSupplier.setStatus(StatusSupply.EN_ATTENTE);
+
+        SupplyOrderDTO dtoWithoutSupplier = new SupplyOrderDTO();
+        dtoWithoutSupplier.setIdOrder(3L);
+        dtoWithoutSupplier.setOrderDate(LocalDate.now());
+        dtoWithoutSupplier.setStatus(StatusSupply.EN_ATTENTE);
+
+        List<SupplyOrder> orders = Arrays.asList(orderWithoutSupplier);
+
+        when(supplyOrderRepository.findAll()).thenReturn(orders);
+        when(supplyOrderMapper.toDto(orderWithoutSupplier)).thenReturn(dtoWithoutSupplier);
+
+        List<SupplyOrderDTO> result = supplyOrderService.findAll();
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertNull(result.get(0).getSupplierName());
+        verify(supplyOrderRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testFindById_WithNullSupplier() {
+        supplyOrder.setSupplier(null);
+        when(supplyOrderRepository.findById(1L)).thenReturn(Optional.of(supplyOrder));
+        when(supplyOrderMapper.toDto(supplyOrder)).thenReturn(supplyOrderDTO);
+
+        SupplyOrderDTO result = supplyOrderService.findById(1L);
+
+        assertNotNull(result);
+        verify(supplyOrderRepository, times(1)).findById(1L);
+    }
 }
