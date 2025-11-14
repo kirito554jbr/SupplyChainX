@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import org.example.supplychainx.DTO.UserRequestDTO;
 import org.example.supplychainx.DTO.UserResponseDTO;
 import org.example.supplychainx.Mappers.UserMapper;
-import org.example.supplychainx.Model.User;
 import org.example.supplychainx.Repository.UserRepository;
-import org.example.supplychainx.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,10 +17,10 @@ public class UserService {
     private UserRepository userRepository;
     private UserMapper userMapper;
 
-    public UserResponseDTO getUserById(Long id) throws ClassNotFoundException {
+    public UserResponseDTO getUserById(Long id) {
         return userRepository.findById(id)
                 .map(userMapper::toDto)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
+                .orElse(null);
     }
 
     public List<UserResponseDTO> getAllUsers() {
@@ -32,17 +30,17 @@ public class UserService {
     }
 
     public UserResponseDTO createUser(UserRequestDTO userDTO) {
-        User user = userMapper.toEntityRequest(userDTO);
-        User savedUser = userRepository.save(user);
+        var user = userMapper.toEntityRequest(userDTO);
+        var savedUser = userRepository.save(user);
         return userMapper.toDto(savedUser);
     }
 
     public UserResponseDTO updateUser(Long id ,UserRequestDTO userDTO) {
-        User existingUser = userRepository.findById(id).orElse(null);
+        var existingUser = userRepository.findById(id).orElse(null);
         if (existingUser != null) {
-            User userToUpdate = userMapper.toEntityRequest(userDTO);
-            userToUpdate.setIdUser(existingUser.getIdUser());
-            User updatedUser = userRepository.save(userToUpdate);
+            var userToUpdate = userMapper.toEntityRequest(userDTO);
+            userToUpdate.setIdUser(userDTO.getIdUser());
+            var updatedUser = userRepository.save(userToUpdate);
             return userMapper.toDto(updatedUser);
         }
         return null;
@@ -53,12 +51,12 @@ public class UserService {
     }
 
     public UserResponseDTO findByUsername(String username) {
-        User user = userRepository.findByLastName(username);
+        var user = userRepository.findByLastName(username);
         return userMapper.toDto(user);
     }
 
     public UserResponseDTO findByEmail(String email) {
-        User user = userRepository.findByEmail(email);
+        var user = userRepository.findByEmail(email);
         return userMapper.toDto(user);
     }
 }

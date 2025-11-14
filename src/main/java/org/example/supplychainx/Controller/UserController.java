@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) throws ClassNotFoundException {
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
         UserResponseDTO user = userService.getUserById(id);
         return ResponseEntity.ok(user);
     }
@@ -33,12 +33,6 @@ public class UserController {
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
         List<UserResponseDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
-    }
-
-    @GetMapping("/email")
-    public ResponseEntity<UserResponseDTO> getUserByEmail(@RequestParam String email) throws ClassNotFoundException {
-        UserResponseDTO user = userService.findByEmail(email);
-        return ResponseEntity.ok(user);
     }
 
     @PostMapping

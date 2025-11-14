@@ -70,7 +70,7 @@ class UserServiceTest {
 
     // Tests for getUserById
     @Test
-    void testGetUserById_Success() throws ClassNotFoundException {
+    void testGetUserById_Success() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(userMapper.toDto(user)).thenReturn(userResponseDTO);
 
@@ -87,7 +87,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testGetUserById_NotFound() throws ClassNotFoundException {
+    void testGetUserById_NotFound() {
         when(userRepository.findById(999L)).thenReturn(Optional.empty());
 
         UserResponseDTO result = userService.getUserById(999L);
@@ -98,7 +98,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testGetUserById_Lambda_MapOperation() throws ClassNotFoundException {
+    void testGetUserById_Lambda_MapOperation() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(userMapper.toDto(user)).thenReturn(userResponseDTO);
 
@@ -110,7 +110,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testGetUserById_DifferentRole() throws ClassNotFoundException {
+    void testGetUserById_DifferentRole() {
         user.setRole(Role.GESTIONNAIRE_APPROVISIONNEMENT);
         userResponseDTO.setRole(Role.GESTIONNAIRE_APPROVISIONNEMENT);
 
@@ -619,7 +619,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testGetUserById_OrElseNull_Lambda() throws ClassNotFoundException {
+    void testGetUserById_OrElseNull_Lambda() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(userMapper.toDto(user)).thenReturn(userResponseDTO);
 
@@ -630,7 +630,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testGetUserById_EmptyOptional_ReturnsNull() throws ClassNotFoundException {
+    void testGetUserById_EmptyOptional_ReturnsNull() {
         when(userRepository.findById(999L)).thenReturn(Optional.empty());
 
         UserResponseDTO result = userService.getUserById(999L);
