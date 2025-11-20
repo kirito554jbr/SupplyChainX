@@ -1,6 +1,7 @@
 package org.example.supplychainx.Service;
 
 import lombok.AllArgsConstructor;
+import org.example.supplychainx.Model.User;
 import org.example.supplychainx.DTO.UserRequestDTO;
 import org.example.supplychainx.DTO.UserResponseDTO;
 import org.example.supplychainx.Mappers.UserMapper;
