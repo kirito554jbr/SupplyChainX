@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,6 +23,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -32,6 +34,9 @@ class UserServiceTest {
     @Mock
     private UserMapper userMapper;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private UserService userService;
 
@@ -41,6 +46,12 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
+        // Mock passwordEncoder behavior with lenient to avoid unnecessary stubbing issues
+        lenient().when(passwordEncoder.encode(any()))
+            .thenAnswer(invocation -> {
+                String input = invocation.getArgument(0);
+                return input != null ? "encoded_" + input : "encoded_null";
+            });
 
         user = new User();
         user.setIdUser(1L);

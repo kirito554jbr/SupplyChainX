@@ -24,7 +24,7 @@ public class UserService {
     public UserResponseDTO getUserById(Long id) {
         return userRepository.findById(id)
                 .map(userMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
     }
 
     public List<UserResponseDTO> getAllUsers() {

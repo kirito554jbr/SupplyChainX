@@ -60,6 +60,7 @@ class SupplyOrderServiceTest {
         rawMaterial = new RawMaterial();
         rawMaterial.setIdMaterial(1L);
         rawMaterial.setName("Steel");
+        rawMaterial.setStock(100);
 
         // Setup SupplyOrder
         supplyOrder = new SupplyOrder();
@@ -218,6 +219,7 @@ class SupplyOrderServiceTest {
         RawMaterial rawMaterial2 = new RawMaterial();
         rawMaterial2.setIdMaterial(2L);
         rawMaterial2.setName("Aluminum");
+        rawMaterial2.setStock(200);
 
         SupplyOrderRequest.RawMaterialQuantity rmq1 = new SupplyOrderRequest.RawMaterialQuantity();
         rmq1.setRawMaterialId(1L);
