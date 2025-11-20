@@ -7,6 +7,7 @@ import org.example.supplychainx.Mappers.UserMapper;
 import org.example.supplychainx.Model.User;
 import org.example.supplychainx.Repository.UserRepository;
 import org.example.supplychainx.exception.UserNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +19,9 @@ import java.util.List;
 public class UserService {
     private UserRepository userRepository;
     private UserMapper userMapper;
+    private PasswordEncoder passwordEncoder;
 
-    public UserResponseDTO getUserById(Long id) throws ClassNotFoundException {
+    public UserResponseDTO getUserById(Long id) {
         return userRepository.findById(id)
                 .map(userMapper::toDto)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -33,6 +35,7 @@ public class UserService {
 
     public UserResponseDTO createUser(UserRequestDTO userDTO) {
         User user = userMapper.toEntityRequest(userDTO);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
         return userMapper.toDto(savedUser);
     }
@@ -42,6 +45,13 @@ public class UserService {
         if (existingUser != null) {
             User userToUpdate = userMapper.toEntityRequest(userDTO);
             userToUpdate.setIdUser(existingUser.getIdUser());
+            // Encode password if it's being updated
+            if (userToUpdate.getPassword() != null && !userToUpdate.getPassword().isEmpty()) {
+                userToUpdate.setPassword(passwordEncoder.encode(userToUpdate.getPassword()));
+            } else {
+                // Keep the existing password if not updating
+                userToUpdate.setPassword(existingUser.getPassword());
+            }
             User updatedUser = userRepository.save(userToUpdate);
             return userMapper.toDto(updatedUser);
         }
@@ -61,4 +71,5 @@ public class UserService {
         User user = userRepository.findByEmail(email);
         return userMapper.toDto(user);
     }
+
 }

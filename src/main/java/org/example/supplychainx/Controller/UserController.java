@@ -41,6 +41,12 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody UserRequestDTO userDTO) {
+        UserResponseDTO createdUser = userService.createUser(userDTO);
+        return ResponseEntity.status(201).body(createdUser);
+    }
+
     @PostMapping
     @RequiresRole({"ADMIN"})
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO userDTO) {

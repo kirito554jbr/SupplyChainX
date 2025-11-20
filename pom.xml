@@ -102,6 +102,15 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -163,9 +172,10 @@
                         <configuration>
                             <includes>
                                 <include>org/example/supplychainx/Service/**</include>
+                                <include>org/example/supplychainx/Controller/**</include>
                             </includes>
                             <excludes>
-                                <exclude>org/example/supplychainx/Controller/**</exclude>
+<!--                                <exclude>org/example/supplychainx/Controller/**</exclude>-->
                                 <exclude>org/example/supplychainx/Config/**</exclude>
                                 <exclude>org/example/supplychainx/Model/**</exclude>
                                 <exclude>org/example/supplychainx/DTO/**</exclude>
