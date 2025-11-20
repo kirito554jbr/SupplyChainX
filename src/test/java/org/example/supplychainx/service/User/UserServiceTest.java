@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,6 +23,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -32,6 +34,9 @@ class UserServiceTest {
     @Mock
     private UserMapper userMapper;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private UserService userService;
 
@@ -41,34 +46,40 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Setup User
+        // Mock passwordEncoder behavior with lenient to avoid unnecessary stubbing issues
+        lenient().when(passwordEncoder.encode(any()))
+            .thenAnswer(invocation -> {
+                String input = invocation.getArgument(0);
+                return input != null ? "encoded_" + input : "encoded_null";
+            });
+
         user = new User();
         user.setIdUser(1L);
         user.setFirstName("John");
         user.setLastName("Doe");
-        user.setEmail("john.doe@example.com");
+        user.setEmail("john.doe@gmail.com");
         user.setPassword("password123");
         user.setRole(Role.ADMIN);
 
-        // Setup UserRequestDTO
+
         userRequestDTO = new UserRequestDTO();
         userRequestDTO.setIdUser(1L);
         userRequestDTO.setFirstName("John");
         userRequestDTO.setLastName("Doe");
-        userRequestDTO.setEmail("john.doe@example.com");
+        userRequestDTO.setEmail("john.doe@gmail.com");
         userRequestDTO.setPassword("password123");
         userRequestDTO.setRole(Role.ADMIN);
 
-        // Setup UserResponseDTO
+
         userResponseDTO = new UserResponseDTO();
         userResponseDTO.setIdUser(1L);
         userResponseDTO.setFirstName("John");
         userResponseDTO.setLastName("Doe");
-        userResponseDTO.setEmail("john.doe@example.com");
+        userResponseDTO.setEmail("john.doe@gmail.com");
         userResponseDTO.setRole(Role.ADMIN);
     }
 
-    // Tests for getUserById
+
     @Test
     void testGetUserById_Success() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
@@ -80,7 +91,7 @@ class UserServiceTest {
         assertEquals(1L, result.getIdUser());
         assertEquals("John", result.getFirstName());
         assertEquals("Doe", result.getLastName());
-        assertEquals("john.doe@example.com", result.getEmail());
+        assertEquals("john.doe@gmail.com", result.getEmail());
         assertEquals(Role.ADMIN, result.getRole());
         verify(userRepository, times(1)).findById(1L);
         verify(userMapper, times(1)).toDto(user);
@@ -90,9 +101,10 @@ class UserServiceTest {
     void testGetUserById_NotFound() {
         when(userRepository.findById(999L)).thenReturn(Optional.empty());
 
-        UserResponseDTO result = userService.getUserById(999L);
+        assertThrows(org.example.supplychainx.exception.UserNotFoundException.class, () -> {
+            userService.getUserById(999L);
+        });
 
-        assertNull(result);
         verify(userRepository, times(1)).findById(999L);
         verify(userMapper, never()).toDto(any());
     }
@@ -124,7 +136,7 @@ class UserServiceTest {
         verify(userRepository, times(1)).findById(1L);
     }
 
-    // Tests for getAllUsers
+
     @Test
     void testGetAllUsers_Success() {
         List<User> users = Arrays.asList(user);
@@ -159,14 +171,14 @@ class UserServiceTest {
         user2.setIdUser(2L);
         user2.setFirstName("Jane");
         user2.setLastName("Smith");
-        user2.setEmail("jane.smith@example.com");
+        user2.setEmail("jane.smith@gmail.com");
         user2.setRole(Role.RESPONSABLE_ACHATS);
 
         UserResponseDTO userResponseDTO2 = new UserResponseDTO();
         userResponseDTO2.setIdUser(2L);
         userResponseDTO2.setFirstName("Jane");
         userResponseDTO2.setLastName("Smith");
-        userResponseDTO2.setEmail("jane.smith@example.com");
+        userResponseDTO2.setEmail("jane.smith@gmail.com");
         userResponseDTO2.setRole(Role.RESPONSABLE_ACHATS);
 
         List<User> users = Arrays.asList(user, user2);
@@ -232,7 +244,7 @@ class UserServiceTest {
         assertNotNull(result);
         assertEquals(1L, result.getIdUser());
         assertEquals("John", result.getFirstName());
-        assertEquals("john.doe@example.com", result.getEmail());
+        assertEquals("john.doe@gmail.com", result.getEmail());
         assertEquals(Role.ADMIN, result.getRole());
         verify(userMapper, times(1)).toEntityRequest(userRequestDTO);
         verify(userRepository, times(1)).save(user);
@@ -244,20 +256,20 @@ class UserServiceTest {
         UserRequestDTO requestDTO = new UserRequestDTO();
         requestDTO.setFirstName("Alice");
         requestDTO.setLastName("Johnson");
-        requestDTO.setEmail("alice@example.com");
+        requestDTO.setEmail("alice@gmail.com");
         requestDTO.setPassword("pass123");
         requestDTO.setRole(Role.PLANIFICATEUR);
 
         User newUser = new User();
         newUser.setFirstName("Alice");
         newUser.setLastName("Johnson");
-        newUser.setEmail("alice@example.com");
+        newUser.setEmail("alice@gmail.com");
         newUser.setRole(Role.PLANIFICATEUR);
 
         UserResponseDTO responseDTO = new UserResponseDTO();
         responseDTO.setFirstName("Alice");
         responseDTO.setLastName("Johnson");
-        responseDTO.setEmail("alice@example.com");
+        responseDTO.setEmail("alice@gmail.com");
         responseDTO.setRole(Role.PLANIFICATEUR);
 
         when(userMapper.toEntityRequest(requestDTO)).thenReturn(newUser);
@@ -339,7 +351,7 @@ class UserServiceTest {
         updatedRequestDTO.setIdUser(1L);
         updatedRequestDTO.setFirstName("John");
         updatedRequestDTO.setLastName("Doe");
-        updatedRequestDTO.setEmail("john.doe@example.com");
+        updatedRequestDTO.setEmail("john.doe@gmail.com");
         updatedRequestDTO.setPassword("newpass");
         updatedRequestDTO.setRole(Role.RESPONSABLE_LOGISTIQUE);
 
@@ -347,14 +359,14 @@ class UserServiceTest {
         updatedUser.setIdUser(1L);
         updatedUser.setFirstName("John");
         updatedUser.setLastName("Doe");
-        updatedUser.setEmail("john.doe@example.com");
+        updatedUser.setEmail("john.doe@gmail.com");
         updatedUser.setRole(Role.RESPONSABLE_LOGISTIQUE);
 
         UserResponseDTO updatedResponseDTO = new UserResponseDTO();
         updatedResponseDTO.setIdUser(1L);
         updatedResponseDTO.setFirstName("John");
         updatedResponseDTO.setLastName("Doe");
-        updatedResponseDTO.setEmail("john.doe@example.com");
+        updatedResponseDTO.setEmail("john.doe@gmail.com");
         updatedResponseDTO.setRole(Role.RESPONSABLE_LOGISTIQUE);
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
@@ -375,17 +387,17 @@ class UserServiceTest {
         updatedRequestDTO.setIdUser(1L);
         updatedRequestDTO.setFirstName("John");
         updatedRequestDTO.setLastName("Doe");
-        updatedRequestDTO.setEmail("john.newemail@example.com");
+        updatedRequestDTO.setEmail("john.newemail@gmail.com");
         updatedRequestDTO.setPassword("password123");
         updatedRequestDTO.setRole(Role.ADMIN);
 
         User updatedUser = new User();
         updatedUser.setIdUser(1L);
-        updatedUser.setEmail("john.newemail@example.com");
+        updatedUser.setEmail("john.newemail@gmail.com");
 
         UserResponseDTO updatedResponseDTO = new UserResponseDTO();
         updatedResponseDTO.setIdUser(1L);
-        updatedResponseDTO.setEmail("john.newemail@example.com");
+        updatedResponseDTO.setEmail("john.newemail@gmail.com");
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(userMapper.toEntityRequest(updatedRequestDTO)).thenReturn(updatedUser);
@@ -395,7 +407,7 @@ class UserServiceTest {
         UserResponseDTO result = userService.updateUser(1L, updatedRequestDTO);
 
         assertNotNull(result);
-        assertEquals("john.newemail@example.com", result.getEmail());
+        assertEquals("john.newemail@gmail.com", result.getEmail());
         verify(userRepository, times(1)).save(any(User.class));
     }
 
@@ -464,14 +476,14 @@ class UserServiceTest {
         smithUser.setIdUser(2L);
         smithUser.setFirstName("Jane");
         smithUser.setLastName("Smith");
-        smithUser.setEmail("jane.smith@example.com");
+        smithUser.setEmail("jane.smith@gmail.com");
         smithUser.setRole(Role.GESTIONNAIRE_COMMERCIAL);
 
         UserResponseDTO smithResponseDTO = new UserResponseDTO();
         smithResponseDTO.setIdUser(2L);
         smithResponseDTO.setFirstName("Jane");
         smithResponseDTO.setLastName("Smith");
-        smithResponseDTO.setEmail("jane.smith@example.com");
+        smithResponseDTO.setEmail("jane.smith@gmail.com");
         smithResponseDTO.setRole(Role.GESTIONNAIRE_COMMERCIAL);
 
         when(userRepository.findByLastName("Smith")).thenReturn(smithUser);
@@ -488,28 +500,28 @@ class UserServiceTest {
     // Tests for findByEmail
     @Test
     void testFindByEmail_Success() {
-        when(userRepository.findByEmail("john.doe@example.com")).thenReturn(user);
+        when(userRepository.findByEmail("john.doe@gmail.com")).thenReturn(user);
         when(userMapper.toDto(user)).thenReturn(userResponseDTO);
 
-        UserResponseDTO result = userService.findByEmail("john.doe@example.com");
+        UserResponseDTO result = userService.findByEmail("john.doe@gmail.com");
 
         assertNotNull(result);
-        assertEquals("john.doe@example.com", result.getEmail());
+        assertEquals("john.doe@gmail.com", result.getEmail());
         assertEquals("John", result.getFirstName());
         assertEquals("Doe", result.getLastName());
-        verify(userRepository, times(1)).findByEmail("john.doe@example.com");
+        verify(userRepository, times(1)).findByEmail("john.doe@gmail.com");
         verify(userMapper, times(1)).toDto(user);
     }
 
     @Test
     void testFindByEmail_NotFound() {
-        when(userRepository.findByEmail("nonexistent@example.com")).thenReturn(null);
+        when(userRepository.findByEmail("nonexistent@gmail.com")).thenReturn(null);
         when(userMapper.toDto(null)).thenReturn(null);
 
-        UserResponseDTO result = userService.findByEmail("nonexistent@example.com");
+        UserResponseDTO result = userService.findByEmail("nonexistent@gmail.com");
 
         assertNull(result);
-        verify(userRepository, times(1)).findByEmail("nonexistent@example.com");
+        verify(userRepository, times(1)).findByEmail("nonexistent@gmail.com");
     }
 
     @Test
@@ -518,26 +530,26 @@ class UserServiceTest {
         anotherUser.setIdUser(3L);
         anotherUser.setFirstName("Bob");
         anotherUser.setLastName("Wilson");
-        anotherUser.setEmail("bob.wilson@example.com");
+        anotherUser.setEmail("bob.wilson@gmail.com");
         anotherUser.setRole(Role.SUPERVISEUR_PRODUCTION);
 
         UserResponseDTO anotherResponseDTO = new UserResponseDTO();
         anotherResponseDTO.setIdUser(3L);
         anotherResponseDTO.setFirstName("Bob");
         anotherResponseDTO.setLastName("Wilson");
-        anotherResponseDTO.setEmail("bob.wilson@example.com");
+        anotherResponseDTO.setEmail("bob.wilson@gmail.com");
         anotherResponseDTO.setRole(Role.SUPERVISEUR_PRODUCTION);
 
-        when(userRepository.findByEmail("bob.wilson@example.com")).thenReturn(anotherUser);
+        when(userRepository.findByEmail("bob.wilson@gmail.com")).thenReturn(anotherUser);
         when(userMapper.toDto(anotherUser)).thenReturn(anotherResponseDTO);
 
-        UserResponseDTO result = userService.findByEmail("bob.wilson@example.com");
+        UserResponseDTO result = userService.findByEmail("bob.wilson@gmail.com");
 
         assertNotNull(result);
-        assertEquals("bob.wilson@example.com", result.getEmail());
+        assertEquals("bob.wilson@gmail.com", result.getEmail());
         assertEquals("Bob", result.getFirstName());
         assertEquals(Role.SUPERVISEUR_PRODUCTION, result.getRole());
-        verify(userRepository, times(1)).findByEmail("bob.wilson@example.com");
+        verify(userRepository, times(1)).findByEmail("bob.wilson@gmail.com");
     }
 
     // Edge case tests
@@ -633,9 +645,10 @@ class UserServiceTest {
     void testGetUserById_EmptyOptional_ReturnsNull() {
         when(userRepository.findById(999L)).thenReturn(Optional.empty());
 
-        UserResponseDTO result = userService.getUserById(999L);
+        assertThrows(org.example.supplychainx.exception.UserNotFoundException.class, () -> {
+            userService.getUserById(999L);
+        });
 
-        assertNull(result);
         verify(userMapper, never()).toDto(any());
     }
 }

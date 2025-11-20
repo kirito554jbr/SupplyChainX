@@ -73,6 +73,8 @@ public SupplyOrderResponse save(SupplyOrderRequest request) {
         RawMaterial rawMaterial = rawMaterialRepository.findById(rmq.getRawMaterialId())
                 .orElseThrow(() -> new IllegalArgumentException("Raw material with ID " + rmq.getRawMaterialId() + " not found."));
 
+        rawMaterial.setStock(rawMaterial.getStock() + rmq.getQuantity());
+
         SupplyOrderMaterials relation = new SupplyOrderMaterials();
         relation.setRawMaterial(rawMaterial);
         relation.setQuantity(rmq.getQuantity());

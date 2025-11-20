@@ -35,6 +35,18 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @GetMapping("/email")
+    public ResponseEntity<UserResponseDTO> getUserByEmail(@RequestParam String email) throws ClassNotFoundException {
+        UserResponseDTO user = userService.findByEmail(email);
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody UserRequestDTO userDTO) {
+        UserResponseDTO createdUser = userService.createUser(userDTO);
+        return ResponseEntity.status(201).body(createdUser);
+    }
+
     @PostMapping
     @RequiresRole({"ADMIN"})
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO userDTO) {
