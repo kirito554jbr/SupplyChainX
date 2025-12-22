@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.example.supplychainx.DTO.Production.ProductionOrderDTO;
 import org.example.supplychainx.DTO.Production.ProductionOrderResponseDTO;
 import org.example.supplychainx.Mappers.Production.ProductionOrderMapper;
+import org.example.supplychainx.Model.Production.BOM;
 import org.example.supplychainx.Model.Production.Product;
 import org.example.supplychainx.Model.Production.ProductionOrder;
 import org.example.supplychainx.Repository.Production.ProductRepository;
@@ -36,6 +37,19 @@ public class ProductionOrderService {
     public ProductionOrderResponseDTO createProductionOrder(ProductionOrderDTO productionOrderDTO) {
         ProductionOrder productionOrder = productionOrderMapper.toEntity(productionOrderDTO);
         Product product = productRepository.findById(productionOrderDTO.getProduct_id()).orElse(null);
+
+        List <BOM> boms = product.getBoms();
+
+        boms.stream().forEach(bom -> {
+            int q = bom.getQuantity() * productionOrder.getQuantity();
+            if(bom.getMaterial().getStock() >= q){
+                bom.getMaterial().setStock(bom.getMaterial().getStock() - q);
+            }
+            else{
+                throw new RuntimeException("Insufficient stock for material: " + bom.getMaterial().getName());
+            }
+        });
+        
         productionOrder.setProduct(product);
         ProductionOrder savedOrder = productionOrderRepository.save(productionOrder);
 
