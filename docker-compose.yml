@@ -13,8 +13,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-#    networks:
-#      - mynetwork
+    networks:
+      - mynetwork
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U sonar"]
       interval: 10s
@@ -38,8 +38,8 @@ services:
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_logs:/opt/sonarqube/logs
       - sonarqube_extensions:/opt/sonarqube/extensions
-#    networks:
-#      - mynetwork
+    networks:
+      - mynetwork
     restart: unless-stopped
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:9000 || exit 1" ]
@@ -74,6 +74,7 @@ services:
       - "8089:80"
     environment:
       - PMA_HOST=db
+      - PMA_PORT=3306
       - PMA_USER=root
       - PMA_PASSWORD=root
       - PMA_ARBITRARY=1
@@ -82,19 +83,75 @@ services:
       - MAX_EXECUTION_TIME=300
     networks:
       - mynetwork
+    depends_on:
+      db:
+        condition: service_healthy
+
+  elasticsearch:
+      image: docker.elastic.co/elasticsearch/elasticsearch:7.17.22
+      container_name: elasticsearch
+      environment:
+        - node.name=elasticsearch
+        - cluster.name=docker-cluster
+        - discovery.type=single-node
+        - bootstrap.memory_lock=true
+        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      ulimits:
+        memlock:
+          soft: -1
+          hard: -1
+      volumes:
+        - es_data:/usr/share/elasticsearch/data
+      ports:
+        - "9200:9200"
+      networks:
+        - mynetwork
+  kibana:
+      image: docker.elastic.co/kibana/kibana:7.17.22
+      container_name: kibana
+      environment:
+        - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      ports:
+        - "5601:5601"
+      networks:
+        - mynetwork
+  logstash:
+      image: docker.elastic.co/logstash/logstash:7.17.22
+      container_name: logstash
+      volumes:
+        - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      ports:
+        - "5000:5000"
+        - "9600:9600"
+      networks:
+        - mynetwork
+      depends_on:
+        - elasticsearch
+      healthcheck:
+        test: [ "CMD-SHELL", "curl -f http://localhost:9600 || exit 1" ]
+        interval: 10s
+        timeout: 5s
+        retries: 10
+        start_period: 30s
+
 
   app:
+    container_name: app
     build: .
     image: supplychainx:latest
     depends_on:
       db:
         condition: service_healthy
+      logstash:
+        condition: service_healthy
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/supplyChainX?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/supplyChainX?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      LOGSTASH_HOST: logstash
     restart: unless-stopped
     networks:
         - mynetwork
@@ -108,4 +165,5 @@ volumes:
     sonarqube_data:
     sonarqube_logs:
     sonarqube_extensions:
+    es_data:
 
