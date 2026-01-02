@@ -7,8 +7,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
-import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
 
@@ -19,6 +17,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final KeycloakJwtAuthenticationConverter keycloakJwtAuthenticationConverter;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -28,8 +28,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                     // Public endpoints
                     .requestMatchers("/api/public/**").permitAll()
+                    .requestMatchers("/api/auth/public/**").permitAll()
                     .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
-                    .requestMatchers("/actuator/health").permitAll()
+                    .requestMatchers("/actuator/health", "/actuator/info").permitAll()
                     // All other requests require authentication
                     .anyRequest().authenticated()
             )
@@ -40,22 +41,15 @@ public class SecurityConfig {
             )
             .oauth2Login(oauth2 -> oauth2
                     .defaultSuccessUrl("/", true)
+            )
+            .exceptionHandling(exceptions -> exceptions
+                    .authenticationEntryPoint(customAuthenticationEntryPoint)
+                    .accessDeniedHandler(customAccessDeniedHandler)
             );
 
         return http.build();
     }
-
-    @Bean
-    public JwtAuthenticationConverter jwtAuthenticationConverter() {
-        JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-
-        // Extract roles from "realm_access.roles" claim
-        grantedAuthoritiesConverter.setAuthoritiesClaimName("realm_access.roles");
-        grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
-
-        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
-
+}
         return jwtAuthenticationConverter;
     }
 }
