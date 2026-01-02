@@ -13,8 +13,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-#    networks:
-#      - mynetwork
+    #    networks:
+    #      - mynetwork
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U sonar"]
       interval: 10s
@@ -38,8 +38,8 @@ services:
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_logs:/opt/sonarqube/logs
       - sonarqube_extensions:/opt/sonarqube/extensions
-#    networks:
-#      - mynetwork
+    #    networks:
+    #      - mynetwork
     restart: unless-stopped
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:9000 || exit 1" ]
@@ -83,6 +83,19 @@ services:
     networks:
       - mynetwork
 
+  keycloak:
+    container_name: keycloak_demo
+    image: quay.io/keycloak/keycloak:25.0.5
+    ports:
+      - 9090:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+    command:
+      - 'start-dev'
+
   app:
     build: .
     image: supplychainx:latest
@@ -95,17 +108,20 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/supplyChainX?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI: http://keycloak:8080/realms/supplychainx
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/supplychainx
+      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
     restart: unless-stopped
     networks:
-        - mynetwork
+      - mynetwork
 
 networks:
   mynetwork:
     driver: bridge
 volumes:
-    db_data:
-    postgres_data:
-    sonarqube_data:
-    sonarqube_logs:
-    sonarqube_extensions:
-
+  db_data:
+  postgres_data:
+  sonarqube_data:
+  sonarqube_logs:
+  sonarqube_extensions:
+  keycloak_data:
