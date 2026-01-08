@@ -91,10 +91,16 @@ services:
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: password
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 9090
+      KC_HOSTNAME_STRICT: false
+      KC_HTTP_ENABLED: true
     volumes:
       - keycloak_data:/opt/keycloak/data
     command:
       - 'start-dev'
+    networks:
+      - mynetwork
 
   app:
     build: .
@@ -102,15 +108,16 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      keycloak:
+        condition: service_started
     ports:
       - "8080:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/supplyChainX?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
-      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI: http://keycloak:8080/realms/supplychainx
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/supplychainx
-      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://localhost:9090/realms/supplychainx
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://keycloak:8080/realms/supplychainx/protocol/openid-connect/certs
     restart: unless-stopped
     networks:
       - mynetwork

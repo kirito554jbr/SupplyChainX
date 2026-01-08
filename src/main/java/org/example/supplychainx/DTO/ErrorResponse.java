@@ -1,31 +1,30 @@
 package org.example.supplychainx.DTO;
-}
-    private String path;
 
-    private String message;
-
-    private String error;
-
-    private int status;
-
-    private Instant timestamp;
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "UTC")
-
-public class ErrorResponse {
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@Data
- */
- * Standardized error response format for API errors
-/**
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
-import lombok.NoArgsConstructor;
-import lombok.Data;
-import lombok.Builder;
-import lombok.AllArgsConstructor;
-import com.fasterxml.jackson.annotation.JsonFormat;
+/**
+ * Standardized error response format for API errors
+ */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ErrorResponse {
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "UTC")
+    private Instant timestamp;
 
+    private int status;
+
+    private String error;
+
+    private String message;
+
+    private String path;
+}
