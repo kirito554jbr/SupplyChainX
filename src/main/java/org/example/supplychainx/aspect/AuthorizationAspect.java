@@ -13,13 +13,20 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 
-@Aspect
-@Component
+// TEMPORARY: Authorization disabled for Angular frontend development
+// TODO: Re-enable by uncommenting @Aspect and @Component before production
+// @Aspect
+// @Component
 @Slf4j
 public class AuthorizationAspect {
 
     @Before("@annotation(requiresRole)")
     public void checkAuthorization(JoinPoint joinPoint, RequiresRole requiresRole) {
+        // TEMPORARY: All authorization checks are disabled for development
+        log.info("Authorization check bypassed for development: {}", joinPoint.getSignature());
+        return;
+
+        /* ORIGINAL AUTHORIZATION CODE - Uncomment to re-enable authorization
         Role currentRole = UserContext.getCurrentRole();
         String currentUser = UserContext.getCurrentUser();
 
@@ -40,5 +47,6 @@ public class AuthorizationAspect {
         }
 
         log.info("User {} with role {} authorized for {}", currentUser, currentRole, joinPoint.getSignature());
+        */
     }
 }

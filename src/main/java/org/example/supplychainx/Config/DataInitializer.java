@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +27,7 @@ public class DataInitializer implements CommandLineRunner {
     private PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public void run(String... args) {
         log.info("=".repeat(80));
         log.info("🔍 DataInitializer is starting...");
@@ -49,7 +51,7 @@ public class DataInitializer implements CommandLineRunner {
                 admin.setPassword(passwordEncoder.encode("0000"));
                 admin.setRole(Role.ADMIN);
                 admin.setEnabled(true);
-                userRepository.save(admin);
+                userRepository.saveAndFlush(admin);
                 log.info("✅ Admin user created: admin@test.com / 0000");
                 System.out.println("✅ Admin user created: admin@test.com / 0000");
             } else {
@@ -66,7 +68,7 @@ public class DataInitializer implements CommandLineRunner {
                 gestionnaire.setPassword(passwordEncoder.encode("0000"));
                 gestionnaire.setRole(Role.GESTIONNAIRE_APPROVISIONNEMENT);
                 gestionnaire.setEnabled(true);
-                userRepository.save(gestionnaire);
+                userRepository.saveAndFlush(gestionnaire);
                 log.info("✅ Gestionnaire user created: gestionnaire@test.com / 0000");
                 System.out.println("✅ Gestionnaire user created: gestionnaire@test.com / 0000");
             } else {
@@ -82,7 +84,7 @@ public class DataInitializer implements CommandLineRunner {
                 production.setPassword(passwordEncoder.encode("0000"));
                 production.setRole(Role.CHEF_PRODUCTION);
                 production.setEnabled(true);
-                userRepository.save(production);
+                userRepository.saveAndFlush(production);
                 log.info("✅ Production user created: production@test.com / 0000");
                 System.out.println("✅ Production user created: production@test.com / 0000");
             } else {
@@ -98,7 +100,7 @@ public class DataInitializer implements CommandLineRunner {
                 logistique.setPassword(passwordEncoder.encode("0000"));
                 logistique.setRole(Role.RESPONSABLE_LOGISTIQUE);
                 logistique.setEnabled(true);
-                userRepository.save(logistique);
+                userRepository.saveAndFlush(logistique);
                 log.info("✅ Logistique user created: logistique@test.com / 0000");
                 System.out.println("✅ Logistique user created: logistique@test.com / 0000");
             } else {

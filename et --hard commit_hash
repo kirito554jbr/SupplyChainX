@@ -1,0 +1,221 @@
+    [33mcommit 583c1e3c2b00383f8fe939b4a234f5b47817ba1a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mJwtAuth[m[33m, [m[1;31morigin/JwtAuth[m[33m)[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Fri Dec 26 15:15:56 2025 +0100
+
+    elk
+
+[33mcommit eac21be01b37fc8493fdcb1cf9959f33668b2075[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Mon Dec 22 09:02:38 2025 +0100
+
+    jwtAuth done
+
+[33mcommit ae51f5e124c0f54abad33756e245f9a83ed07189[m[33m ([m[1;31morigin/develop[m[33m, [m[1;32mdevelop[m[33m)[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Thu Nov 20 16:52:34 2025 +0100
+
+    test fix
+
+[33mcommit ea5ee541a87320d9a837fc44ce0e615028289d5c[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Thu Nov 20 16:40:30 2025 +0100
+
+    chamged 1
+
+[33mcommit caa0b2407bbaec4c2758d821ee257b9caa9c90a5[m
+Merge: 8c78556 c24f980
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Thu Nov 20 16:37:44 2025 +0100
+
+    chamged
+
+[33mcommit 8c785563b595177380bf56211c69beaf46b840bb[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Thu Nov 20 16:33:20 2025 +0100
+
+    exceptions
+
+[33mcommit c24f980679a6ec1cedb7a6530b40e8066ece997b[m
+Merge: 6ea8271 a9f7160
+Author: Aymen JEBRANE <150394822+kirito554jbr@users.noreply.github.com>
+Date:   Thu Nov 20 16:16:35 2025 +0100
+
+    Merge branch 'main' into develop
+
+[33mcommit 6ea8271628067efa144cc8855fc14108b3fd8f70[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Thu Nov 20 16:15:00 2025 +0100
+
+    basic authentication done
+
+[33mcommit a9f7160a3576d56bf90bd27f1f59bc2f0387b286[m[33m ([m[1;31morigin/main[m[33m)[m
+Merge: a6d7c16 4d32bef
+Author: Aymen JEBRANE <150394822+kirito554jbr@users.noreply.github.com>
+Date:   Fri Nov 14 14:50:25 2025 +0100
+
+    Merge pull request #10 from kirito554jbr/revert-9-develop
+    
+    Revert "user integration tests done"
+
+[33mcommit 4d32bef1a3adb6023fb8c7b7e083c5c83249f44a[m
+Author: Aymen JEBRANE <150394822+kirito554jbr@users.noreply.github.com>
+Date:   Fri Nov 14 14:47:19 2025 +0100
+
+    Revert "user integration tests done"
+
+[33mcommit a6d7c1626a4a2eb0d4571f20ea7aedb70eda7a96[m
+Merge: 3227e15 de5e219
+Author: Aymen JEBRANE <150394822+kirito554jbr@users.noreply.github.com>
+Date:   Fri Nov 14 14:47:08 2025 +0100
+
+    Merge pull request #9 from kirito554jbr/develop
+    
+    user integration tests done
+
+[33mcommit de5e2193c5174e5cabd28d9d058e626889d05ec8[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Fri Nov 14 14:28:44 2025 +0100
+
+    user integration tests done
+
+[33mcommit 3227e15e697a00d341fd67043bcb31de6e8d1fb4[m
+Merge: cc37c10 fcf6571
+Author: Aymen JEBRANE <150394822+kirito554jbr@users.noreply.github.com>
+Date:   Wed Nov 12 16:26:49 2025 +0100
+
+    Merge pull request #8 from kirito554jbr/develop
+    
+    github action and docker done
+
+[33mcommit fcf65717610cc42c42022be03bf097b282e64b82[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Wed Nov 12 16:21:53 2025 +0100
+
+    github action and docker done
+
+[33mcommit cc37c10f6873bad1a66a373729e4ebfdba5817db[m
+Author: Aymen JEBRANE <150394822+kirito554jbr@users.noreply.github.com>
+Date:   Wed Nov 12 15:02:38 2025 +0100
+
+    Add Docker build and push step to workflow
+    
+    Added a step to build and push Docker image.
+
+[33mcommit 044c77dae295a1975bc9f44e344195cc66d8098a[m
+Merge: c34f161 c6c5b6c
+Author: Aymen JEBRANE <150394822+kirito554jbr@users.noreply.github.com>
+Date:   Wed Nov 12 14:16:20 2025 +0100
+
+    Merge pull request #7 from kirito554jbr/ci-workflow-2
+    
+    Remove dependency graph update step from workflow
+
+[33mcommit c6c5b6c79f6b0f38075295abbc1d65b75ca7df8d[m
+Author: Aymen JEBRANE <150394822+kirito554jbr@users.noreply.github.com>
+Date:   Wed Nov 12 14:15:20 2025 +0100
+
+    Remove dependency graph update step from workflow
+    
+    Removed optional step to update the dependency graph.
+
+[33mcommit c34f16144929d7ce5affd3a0c16abcb8629382a4[m
+Merge: 5070a24 70b1549
+Author: Aymen JEBRANE <150394822+kirito554jbr@users.noreply.github.com>
+Date:   Tue Nov 11 10:15:27 2025 +0100
+
+    Merge pull request #4 from kirito554jbr/develop
+    
+    sonarQube
+
+[33mcommit 70b15497d18de64044fe9b130ef415a30a58f65e[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Tue Nov 11 10:14:13 2025 +0100
+
+    sonarQube
+
+[33mcommit 5070a2450bdb8c7bcb51831127e58bf4d59a0d0e[m
+Merge: b091054 b022968
+Author: Aymen JEBRANE <150394822+kirito554jbr@users.noreply.github.com>
+Date:   Fri Nov 7 17:54:51 2025 +0100
+
+    Merge pull request #3 from kirito554jbr/develop
+    
+    added autorazation
+
+[33mcommit b022968f0d5b00bbe8d03f595bb4ecb6f766ed67[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Fri Nov 7 17:53:51 2025 +0100
+
+    added autorazation
+
+[33mcommit b091054c7a905ce16e7782f7f309bb0e9a53b88e[m
+Merge: 5371f6c b827db4
+Author: Aymen JEBRANE <150394822+kirito554jbr@users.noreply.github.com>
+Date:   Wed Nov 5 11:42:50 2025 +0100
+
+    Merge pull request #2 from kirito554jbr/livraison
+    
+    finished Livraison Service
+
+[33mcommit 5371f6cfea69ab4988079169621b967d50740b0e[m
+Merge: 0593c0c ff51b13
+Author: Aymen JEBRANE <150394822+kirito554jbr@users.noreply.github.com>
+Date:   Wed Nov 5 11:42:26 2025 +0100
+
+    Merge pull request #1 from kirito554jbr/Production
+    
+    Production
+
+[33mcommit b827db4056fdd28a2020037ec5750063918e44be[m[33m ([m[1;31morigin/livraison[m[33m, [m[1;32mApprovisionnement[m[33m)[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Wed Nov 5 11:39:44 2025 +0100
+
+    finished Livraison Service
+
+[33mcommit ff51b139fb5537f31fbf2caa7b56e4647747960b[m[33m ([m[1;31morigin/Production[m[33m)[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Wed Nov 5 11:38:42 2025 +0100
+
+    finished Livraison Service
+
+[33mcommit cb00c8eee6e4099f368483cb9d7a1c8b3b87e2fb[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Tue Nov 4 11:38:15 2025 +0100
+
+    finished Production Service
+
+[33mcommit 0529156f731a898c2f2ddc204c482c3cef7239b7[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Mon Nov 3 16:08:43 2025 +0100
+
+    finished BOM and Product
+
+[33mcommit 68e0618d08f92f71c0d67cd0a7d8f2effa879289[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Mon Nov 3 16:06:10 2025 +0100
+
+    finished BOM
+
+[33mcommit 2cb52f9da7fa49397cd9fa4786a71dc3123ec5a0[m[33m ([m[1;32mProduction[m[33m)[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Mon Nov 3 16:02:17 2025 +0100
+
+    finished BOM
+
+[33mcommit ddc642880ce69cdcd532e7f204546cd162968459[m[33m ([m[1;31morigin/Approvisionnement[m[33m)[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Fri Oct 31 09:37:13 2025 +0100
+
+    finished supplier and rawMaterials
+
+[33mcommit 21d06a18b038ae54020d2991fe71d59403e5cc19[m[33m ([m[1;32mmain[m[33m)[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Tue Oct 28 14:07:06 2025 +0100
+
+    finished the models for the first and second services and added a dto and mappers for the first service
+
+[33mcommit 0593c0c965c734645918ec55dd2276a0b2a7906a[m
+Author: Kirito <ay5jbr2023@gmail.com>
+Date:   Tue Oct 28 14:04:24 2025 +0100
+
+    first commit

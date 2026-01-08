@@ -1,9 +1,10 @@
 package org.example.supplychainx.Config;
 
-import lombok.AllArgsConstructor;
 import org.example.supplychainx.Service.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -18,29 +19,54 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
 public class SecurityConfig {
-    private CustomUserDetailsService userDetailsService;
-    private JwtAuthenticationFilter jwtAuthFilter;
+
+    private final CustomUserDetailsService userDetailsService;
+    // JWT Filter is temporarily disabled for frontend development
+    // private final JwtAuthenticationFilter jwtAuthFilter;
+
+    @Autowired
+    public SecurityConfig(@Lazy CustomUserDetailsService userDetailsService
+                         /* @Lazy JwtAuthenticationFilter jwtAuthFilter */) {
+        this.userDetailsService = userDetailsService;
+        // this.jwtAuthFilter = jwtAuthFilter;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // TEMPORARY: All security disabled for Angular frontend development
+        // TODO: Re-enable JWT authentication before production deployment
+        http
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                    .anyRequest().permitAll()  // Allow all requests without authentication
+            );
+
+        // JWT filter is commented out for development
+        // .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+
+        /* ORIGINAL SECURITY CONFIGURATION - Uncomment this section to re-enable JWT authentication
         http
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints - Authentication & Registration
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/users/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
 
-                        // User Management - /api/users
-                        .requestMatchers("/api/users/**").hasAnyRole("ADMIN", "GESTIONNAIRE_APPROVISIONNEMENT", "RESPONSABLE_ACHATS", "SUPERVISEUR_LOGISTIQUE", "CHEF_PRODUCTION", "PLANIFICATEUR", "SUPERVISEUR_PRODUCTION", "GESTIONNAIRE_COMMERCIAL", "RESPONSABLE_LOGISTIQUE", "SUPERVISEUR_LIVRAISONS")
+                        // User Management - /api/users (excluding /register which is public)
+                        .requestMatchers(HttpMethod.POST, "/api/users").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/users/**").hasAnyRole("ADMIN", "GESTIONNAIRE_APPROVISIONNEMENT", "RESPONSABLE_ACHATS", "SUPERVISEUR_LOGISTIQUE", "CHEF_PRODUCTION", "PLANIFICATEUR", "SUPERVISEUR_PRODUCTION", "GESTIONNAIRE_COMMERCIAL", "RESPONSABLE_LOGISTIQUE", "SUPERVISEUR_LIVRAISONS")
+                        .requestMatchers(HttpMethod.PUT, "/api/users/**").hasAnyRole("ADMIN", "GESTIONNAIRE_APPROVISIONNEMENT", "RESPONSABLE_ACHATS", "SUPERVISEUR_LOGISTIQUE", "CHEF_PRODUCTION", "PLANIFICATEUR", "SUPERVISEUR_PRODUCTION", "GESTIONNAIRE_COMMERCIAL", "RESPONSABLE_LOGISTIQUE", "SUPERVISEUR_LIVRAISONS")
+                        .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("ADMIN")
 
                         // Raw Materials - /api/rawMaterials
                         .requestMatchers("/api/rawMaterials/filter/low-stock").hasAnyRole("ADMIN", "SUPERVISEUR_LOGISTIQUE")
-                        .requestMatchers("/api/rawMaterials/*/suppliers/*").hasAnyRole("ADMIN", "GESTIONNAIRE_APPROVISIONNEMENT")
                         .requestMatchers("/api/rawMaterials").hasAnyRole("ADMIN", "SUPERVISEUR_LOGISTIQUE", "PLANIFICATEUR", "GESTIONNAIRE_APPROVISIONNEMENT")
-                        .requestMatchers("/api/rawMaterials/*").hasAnyRole("ADMIN", "SUPERVISEUR_LOGISTIQUE", "PLANIFICATEUR", "GESTIONNAIRE_APPROVISIONNEMENT")
+                        .requestMatchers("/api/rawMaterials/**").hasAnyRole("ADMIN", "SUPERVISEUR_LOGISTIQUE", "PLANIFICATEUR", "GESTIONNAIRE_APPROVISIONNEMENT")
 
                         // Suppliers - /api/suppliers
                         .requestMatchers("/api/suppliers").hasAnyRole("ADMIN", "SUPERVISEUR_LOGISTIQUE", "GESTIONNAIRE_APPROVISIONNEMENT")
@@ -83,15 +109,17 @@ public class SecurityConfig {
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
+        */
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

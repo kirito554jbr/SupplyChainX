@@ -1,0 +1,208 @@
+{
+  "apiConfig": {
+    "baseUrl": "http://localhost:8080",
+    "apiPrefix": "/api",
+    "timeout": 30000,
+    "cors": {
+      "allowedOrigin": "http://localhost:4200",
+      "withCredentials": true
+    }
+  },
+  "authentication": {
+    "endpoints": {
+      "register": "/users/register",
+      "login": "/auth/login",
+      "logout": "/auth/logout",
+      "refresh": "/auth/refresh",
+      "validate": "/auth/validate"
+    },
+    "tokenConfig": {
+      "accessTokenKey": "accessToken",
+      "refreshTokenKey": "refreshToken",
+      "accessTokenExpiration": 900000,
+      "refreshTokenExpiration": 604800000,
+      "storageType": "localStorage"
+    }
+  },
+  "endpoints": {
+    "users": {
+      "base": "/users",
+      "register": "/users/register",
+      "getAll": "/users",
+      "getById": "/users/{id}",
+      "getByEmail": "/users/email",
+      "create": "/users",
+      "update": "/users/{id}",
+      "delete": "/users/{id}"
+    },
+    "rawMaterials": {
+      "base": "/rawMaterials",
+      "getAll": "/rawMaterials",
+      "getById": "/rawMaterials/{id}",
+      "getLowStock": "/rawMaterials/filter/low-stock",
+      "create": "/rawMaterials",
+      "update": "/rawMaterials/{id}",
+      "delete": "/rawMaterials/{id}",
+      "linkSupplier": "/rawMaterials/{materialId}/suppliers/{supplierId}"
+    },
+    "suppliers": {
+      "base": "/suppliers",
+      "getAll": "/suppliers",
+      "getById": "/suppliers/{id}",
+      "create": "/suppliers",
+      "update": "/suppliers/{id}",
+      "delete": "/suppliers/{id}"
+    },
+    "supplyOrders": {
+      "base": "/supply-orders",
+      "getAll": "/supply-orders",
+      "getById": "/supply-orders/{id}",
+      "create": "/supply-orders",
+      "update": "/supply-orders/{id}",
+      "delete": "/supply-orders/{id}"
+    },
+    "customers": {
+      "base": "/customers",
+      "getAll": "/customers",
+      "getById": "/customers/{id}",
+      "getByName": "/customers/by-name/{name}",
+      "create": "/customers",
+      "update": "/customers/{id}",
+      "delete": "/customers/{id}"
+    },
+    "deliveries": {
+      "base": "/deliveries",
+      "getAll": "/deliveries",
+      "getById": "/deliveries/{id}",
+      "create": "/deliveries",
+      "update": "/deliveries/{id}",
+      "delete": "/deliveries/{id}"
+    },
+    "orders": {
+      "base": "/orders",
+      "getAll": "/orders",
+      "getById": "/orders/{id}",
+      "create": "/orders",
+      "update": "/orders/{id}",
+      "delete": "/orders/{id}"
+    },
+    "products": {
+      "base": "/products",
+      "getAll": "/products",
+      "getById": "/products/{id}",
+      "create": "/products",
+      "update": "/products/{id}",
+      "delete": "/products/{id}"
+    },
+    "boms": {
+      "base": "/boms",
+      "getAll": "/boms",
+      "getById": "/boms/{id}",
+      "create": "/boms",
+      "update": "/boms/{id}",
+      "delete": "/boms/{id}"
+    },
+    "productionOrders": {
+      "base": "/productionOrders",
+      "getAll": "/productionOrders",
+      "getById": "/productionOrders/{id}",
+      "create": "/productionOrders",
+      "update": "/productionOrders/{id}",
+      "delete": "/productionOrders/{id}"
+    }
+  },
+  "roles": {
+    "ADMIN": {
+      "name": "Administrator",
+      "code": "ADMIN",
+      "permissions": ["full_access"]
+    },
+    "GESTIONNAIRE_APPROVISIONNEMENT": {
+      "name": "Supply Manager",
+      "code": "GESTIONNAIRE_APPROVISIONNEMENT",
+      "permissions": ["raw_materials", "suppliers", "users_view"]
+    },
+    "RESPONSABLE_ACHATS": {
+      "name": "Purchasing Manager",
+      "code": "RESPONSABLE_ACHATS",
+      "permissions": ["supply_orders", "users_view"]
+    },
+    "SUPERVISEUR_LOGISTIQUE": {
+      "name": "Logistics Supervisor",
+      "code": "SUPERVISEUR_LOGISTIQUE",
+      "permissions": ["raw_materials", "suppliers", "supply_orders", "users_view"]
+    },
+    "CHEF_PRODUCTION": {
+      "name": "Production Manager",
+      "code": "CHEF_PRODUCTION",
+      "permissions": ["products", "boms", "production_orders", "users_view"]
+    },
+    "PLANIFICATEUR": {
+      "name": "Planner",
+      "code": "PLANIFICATEUR",
+      "permissions": ["raw_materials", "products", "boms", "users_view"]
+    },
+    "SUPERVISEUR_PRODUCTION": {
+      "name": "Production Supervisor",
+      "code": "SUPERVISEUR_PRODUCTION",
+      "permissions": ["products", "boms", "production_orders", "users_view"]
+    },
+    "GESTIONNAIRE_COMMERCIAL": {
+      "name": "Sales Manager",
+      "code": "GESTIONNAIRE_COMMERCIAL",
+      "permissions": ["customers", "orders", "users_view"]
+    },
+    "RESPONSABLE_LOGISTIQUE": {
+      "name": "Logistics Manager",
+      "code": "RESPONSABLE_LOGISTIQUE",
+      "permissions": ["deliveries", "users_view"]
+    },
+    "SUPERVISEUR_LIVRAISONS": {
+      "name": "Delivery Supervisor",
+      "code": "SUPERVISEUR_LIVRAISONS",
+      "permissions": ["deliveries", "orders", "users_view"]
+    }
+  },
+  "testUsers": [
+    {
+      "email": "admin@test.com",
+      "password": "0000",
+      "role": "ADMIN",
+      "description": "Full system access"
+    },
+    {
+      "email": "gestionnaire@test.com",
+      "password": "0000",
+      "role": "GESTIONNAIRE_APPROVISIONNEMENT",
+      "description": "Supply management access"
+    },
+    {
+      "email": "production@test.com",
+      "password": "0000",
+      "role": "CHEF_PRODUCTION",
+      "description": "Production management access"
+    },
+    {
+      "email": "logistique@test.com",
+      "password": "0000",
+      "role": "RESPONSABLE_LOGISTIQUE",
+      "description": "Logistics management access"
+    }
+  ],
+  "httpStatusCodes": {
+    "200": "OK - Request successful",
+    "201": "Created - Resource created successfully",
+    "204": "No Content - Deletion successful",
+    "400": "Bad Request - Invalid request data",
+    "401": "Unauthorized - Token missing, invalid, or expired",
+    "403": "Forbidden - Insufficient permissions",
+    "404": "Not Found - Resource doesn't exist",
+    "409": "Conflict - Duplicate resource",
+    "500": "Internal Server Error - Server error"
+  },
+  "swaggerDocs": {
+    "ui": "http://localhost:8080/swagger-ui.html",
+    "json": "http://localhost:8080/v3/api-docs"
+  }
+}
+
